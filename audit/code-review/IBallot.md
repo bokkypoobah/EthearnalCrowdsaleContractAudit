@@ -7,37 +7,50 @@ Source file [../../contracts/IBallot.sol](../../contracts/IBallot.sol).
 <hr />
 
 ```javascript
+// BK Ok - Will be replaced
 pragma solidity ^0.4.15;
 
+// BK Ok
 import "./EthearnalRepToken.sol";
 import "./VotingProxy.sol";
 
+// BK Ok
 contract IBallot {
+    // BK Ok
     using SafeMath for uint256;
+    // BK Ok
     EthearnalRepToken public tokenContract;
 
     // Date when vote has started
+    // BK Ok
     uint256 public ballotStarted;
 
     // Registry of votes
+    // BK Ok
     mapping(address => bool) public votesByAddress;
 
     // Sum of weights of YES votes
+    // BK Ok
     uint256 public yesVoteSum = 0;
 
     // Sum of weights of NO votes
+    // BK Ok
     uint256 public noVoteSum = 0;
 
     // Length of `voters`
+    // BK Ok
     uint256 public votersLength = 0;
 
+    // BK Ok
     uint256 public initialQuorumPercent = 51;
 
     VotingProxy public proxyVotingContract;
 
     // Tells if voting process is active
+    // BK OK
     bool public isVotingActive = false;
 
+    // BK Ok - Event
     event FinishBallot(uint256 _time);
     
     modifier onlyWhenBallotStarted {
@@ -80,13 +93,19 @@ contract IBallot {
     }
     
     function processVote(bool isYes) internal {
+        // BK Ok
         require(isVotingActive);
+        // BK Ok
         require(!votesByAddress[msg.sender]);
+        // BK Ok
         votersLength = votersLength.add(1);
+        // BK Ok
         uint256 voteWeight = tokenContract.balanceOf(msg.sender);
         if (isYes) {
+            // BK Ok
             yesVoteSum = yesVoteSum.add(voteWeight);
         } else {
+            // BK Ok
             noVoteSum = noVoteSum.add(voteWeight);
         }
         require(getTime().sub(tokenContract.lastMovement(msg.sender)) > 7 days);
@@ -100,18 +119,26 @@ contract IBallot {
     }
 
     function decide() internal {
+        // BK Ok
         uint256 quorumPercent = getQuorumPercent();
+        // BK Ok
         uint256 quorum = quorumPercent.mul(tokenContract.totalSupply()).div(100);
+        // BK Ok
         uint256 soFarVoted = yesVoteSum.add(noVoteSum);
+        // BK Ok
         if (soFarVoted >= quorum) {
+            // BK Ok
             uint256 percentYes = (100 * yesVoteSum).div(soFarVoted);
+            // BK Ok
             if (percentYes >= initialQuorumPercent) {
                 // does not matter if it would be greater than weiRaised
                 proxyVotingContract.proxyIncreaseWithdrawalChunk();
                 FinishBallot(now);
+                // BK Ok
                 isVotingActive = false;
             } else {
                 // do nothing, just deactivate voting
+                // BK Ok
                 isVotingActive = false;
             }
         }

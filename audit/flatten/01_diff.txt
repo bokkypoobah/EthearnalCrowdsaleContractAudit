@@ -1,0 +1,354 @@
+pragma solidity ^0.4.18;				      |	pragma solidity ^0.4.11;
+
+							      >
+							      >	/**
+							      >	 * @title SafeMath
+							      >	 * @dev Math operations with safety checks that throw on erro
+							      >	 */
+library SafeMath {						library SafeMath {
+  function mul(uint256 a, uint256 b) internal constant return	  function mul(uint256 a, uint256 b) internal constant return
+    uint256 c = a * b;						    uint256 c = a * b;
+    assert(a == 0 || c / a == b);				    assert(a == 0 || c / a == b);
+    return c;							    return c;
+  }								  }
+
+  function div(uint256 a, uint256 b) internal constant return	  function div(uint256 a, uint256 b) internal constant return
+    // assert(b > 0); // Solidity automatically throws when d	    // assert(b > 0); // Solidity automatically throws when d
+    uint256 c = a / b;						    uint256 c = a / b;
+    // assert(a == b * c + a % b); // There is no case in whi	    // assert(a == b * c + a % b); // There is no case in whi
+    return c;							    return c;
+  }								  }
+
+  function sub(uint256 a, uint256 b) internal constant return	  function sub(uint256 a, uint256 b) internal constant return
+    assert(b <= a);						    assert(b <= a);
+    return a - b;						    return a - b;
+  }								  }
+
+  function add(uint256 a, uint256 b) internal constant return	  function add(uint256 a, uint256 b) internal constant return
+    uint256 c = a + b;						    uint256 c = a + b;
+    assert(c >= a);						    assert(c >= a);
+    return c;							    return c;
+  }								  }
+}								}
+							      >	pragma solidity ^0.4.11;
+							      >
+
+							      >	/**
+							      >	 * @title Ownable
+							      >	 * @dev The Ownable contract has an owner address, and provid
+							      >	 * functions, this simplifies the implementation of "user per
+							      >	 */
+contract Ownable {						contract Ownable {
+  address public owner;						  address public owner;
+
+
+  event OwnershipTransferred(address indexed previousOwner, a	  event OwnershipTransferred(address indexed previousOwner, a
+
+
+  /**								  /**
+   * @dev The Ownable constructor sets the original `owner` o	   * @dev The Ownable constructor sets the original `owner` o
+   * account.							   * account.
+   */								   */
+  function Ownable() {						  function Ownable() {
+    owner = msg.sender;						    owner = msg.sender;
+  }								  }
+
+
+  /**								  /**
+   * @dev Throws if called by any account other than the owne	   * @dev Throws if called by any account other than the owne
+   */								   */
+  modifier onlyOwner() {					  modifier onlyOwner() {
+    require(msg.sender == owner);				    require(msg.sender == owner);
+    _;								    _;
+  }								  }
+
+
+  /**								  /**
+   * @dev Allows the current owner to transfer control of the	   * @dev Allows the current owner to transfer control of the
+   * @param newOwner The address to transfer ownership to.	   * @param newOwner The address to transfer ownership to.
+   */								   */
+  function transferOwnership(address newOwner) onlyOwner publ	  function transferOwnership(address newOwner) onlyOwner publ
+    require(newOwner != address(0));				    require(newOwner != address(0));
+    OwnershipTransferred(owner, newOwner);			    OwnershipTransferred(owner, newOwner);
+    owner = newOwner;						    owner = newOwner;
+  }								  }
+
+}								}
+							      >	pragma solidity ^0.4.11;
+							      >
+
+							      >	/**
+							      >	 * @title ERC20Basic
+							      >	 * @dev Simpler version of ERC20 interface
+							      >	 * @dev see https://github.com/ethereum/EIPs/issues/179
+							      >	 */
+contract ERC20Basic {						contract ERC20Basic {
+  uint256 public totalSupply;					  uint256 public totalSupply;
+  function balanceOf(address who) public constant returns (ui	  function balanceOf(address who) public constant returns (ui
+  function transfer(address to, uint256 value) public returns	  function transfer(address to, uint256 value) public returns
+  event Transfer(address indexed from, address indexed to, ui	  event Transfer(address indexed from, address indexed to, ui
+}								}
+							      >	pragma solidity ^0.4.11;
+							      >
+							      >
+							      >	import './ERC20Basic.sol';
+
+							      >
+							      >	/**
+							      >	 * @title ERC20 interface
+							      >	 * @dev see https://github.com/ethereum/EIPs/issues/20
+							      >	 */
+contract ERC20 is ERC20Basic {					contract ERC20 is ERC20Basic {
+  function allowance(address owner, address spender) public c	  function allowance(address owner, address spender) public c
+  function transferFrom(address from, address to, uint256 val	  function transferFrom(address from, address to, uint256 val
+  function approve(address spender, uint256 value) public ret	  function approve(address spender, uint256 value) public ret
+  event Approval(address indexed owner, address indexed spend	  event Approval(address indexed owner, address indexed spend
+}								}
+							      >	pragma solidity ^0.4.11;
+							      >
+							      >
+							      >	import './ERC20Basic.sol';
+							      >	import '../math/SafeMath.sol';
+
+							      >
+							      >	/**
+							      >	 * @title Basic token
+							      >	 * @dev Basic version of StandardToken, with no allowances.
+							      >	 */
+contract BasicToken is ERC20Basic {				contract BasicToken is ERC20Basic {
+  using SafeMath for uint256;					  using SafeMath for uint256;
+
+  mapping(address => uint256) balances;				  mapping(address => uint256) balances;
+
+  /**								  /**
+  * @dev transfer token for a specified address			  * @dev transfer token for a specified address
+  * @param _to The address to transfer to.			  * @param _to The address to transfer to.
+  * @param _value The amount to be transferred.			  * @param _value The amount to be transferred.
+  */								  */
+  function transfer(address _to, uint256 _value) public retur	  function transfer(address _to, uint256 _value) public retur
+    require(_to != address(0));					    require(_to != address(0));
+
+    // SafeMath.sub will throw if there is not enough balance	    // SafeMath.sub will throw if there is not enough balance
+    balances[msg.sender] = balances[msg.sender].sub(_value);	    balances[msg.sender] = balances[msg.sender].sub(_value);
+    balances[_to] = balances[_to].add(_value);			    balances[_to] = balances[_to].add(_value);
+    Transfer(msg.sender, _to, _value);				    Transfer(msg.sender, _to, _value);
+    return true;						    return true;
+  }								  }
+
+  /**								  /**
+  * @dev Gets the balance of the specified address.		  * @dev Gets the balance of the specified address.
+  * @param _owner The address to query the the balance of.	  * @param _owner The address to query the the balance of.
+  * @return An uint256 representing the amount owned by the p	  * @return An uint256 representing the amount owned by the p
+  */								  */
+  function balanceOf(address _owner) public constant returns 	  function balanceOf(address _owner) public constant returns 
+    return balances[_owner];					    return balances[_owner];
+  }								  }
+
+}								}
+							      >	pragma solidity ^0.4.11;
+							      >
+
+							      >	import './BasicToken.sol';
+							      >	import './ERC20.sol';
+							      >
+							      >
+							      >	/**
+							      >	 * @title Standard ERC20 token
+							      >	 *
+							      >	 * @dev Implementation of the basic standard token.
+							      >	 * @dev https://github.com/ethereum/EIPs/issues/20
+							      >	 * @dev Based on code by FirstBlood: https://github.com/First
+							      >	 */
+contract StandardToken is ERC20, BasicToken {			contract StandardToken is ERC20, BasicToken {
+
+  mapping (address => mapping (address => uint256)) allowed;	  mapping (address => mapping (address => uint256)) allowed;
+
+
+  /**								  /**
+   * @dev Transfer tokens from one address to another		   * @dev Transfer tokens from one address to another
+   * @param _from address The address which you want to send 	   * @param _from address The address which you want to send 
+   * @param _to address The address which you want to transfe	   * @param _to address The address which you want to transfe
+   * @param _value uint256 the amount of tokens to be transfe	   * @param _value uint256 the amount of tokens to be transfe
+   */								   */
+  function transferFrom(address _from, address _to, uint256 _	  function transferFrom(address _from, address _to, uint256 _
+    require(_to != address(0));					    require(_to != address(0));
+
+    uint256 _allowance = allowed[_from][msg.sender];		    uint256 _allowance = allowed[_from][msg.sender];
+
+    // Check is not needed because sub(_allowance, _value) wi	    // Check is not needed because sub(_allowance, _value) wi
+    // require (_value <= _allowance);				    // require (_value <= _allowance);
+
+    balances[_from] = balances[_from].sub(_value);		    balances[_from] = balances[_from].sub(_value);
+    balances[_to] = balances[_to].add(_value);			    balances[_to] = balances[_to].add(_value);
+    allowed[_from][msg.sender] = _allowance.sub(_value);	    allowed[_from][msg.sender] = _allowance.sub(_value);
+    Transfer(_from, _to, _value);				    Transfer(_from, _to, _value);
+    return true;						    return true;
+  }								  }
+
+  /**								  /**
+   * @dev Approve the passed address to spend the specified a	   * @dev Approve the passed address to spend the specified a
+   *								   *
+   * Beware that changing an allowance with this method bring	   * Beware that changing an allowance with this method bring
+   * and the new allowance by unfortunate transaction orderin	   * and the new allowance by unfortunate transaction orderin
+   * race condition is to first reduce the spender's allowanc	   * race condition is to first reduce the spender's allowanc
+   * https://github.com/ethereum/EIPs/issues/20#issuecomment-	   * https://github.com/ethereum/EIPs/issues/20#issuecomment-
+   * @param _spender The address which will spend the funds.	   * @param _spender The address which will spend the funds.
+   * @param _value The amount of tokens to be spent.		   * @param _value The amount of tokens to be spent.
+   */								   */
+  function approve(address _spender, uint256 _value) public r	  function approve(address _spender, uint256 _value) public r
+    allowed[msg.sender][_spender] = _value;			    allowed[msg.sender][_spender] = _value;
+    Approval(msg.sender, _spender, _value);			    Approval(msg.sender, _spender, _value);
+    return true;						    return true;
+  }								  }
+
+  /**								  /**
+   * @dev Function to check the amount of tokens that an owne	   * @dev Function to check the amount of tokens that an owne
+   * @param _owner address The address which owns the funds.	   * @param _owner address The address which owns the funds.
+   * @param _spender address The address which will spend the	   * @param _spender address The address which will spend the
+   * @return A uint256 specifying the amount of tokens still 	   * @return A uint256 specifying the amount of tokens still 
+   */								   */
+  function allowance(address _owner, address _spender) public	  function allowance(address _owner, address _spender) public
+    return allowed[_owner][_spender];				    return allowed[_owner][_spender];
+  }								  }
+
+  /**								  /**
+   * approve should be called when allowed[_spender] == 0. To	   * approve should be called when allowed[_spender] == 0. To
+   * allowed value is better to use this function to avoid 2 	   * allowed value is better to use this function to avoid 2 
+   * the first transaction is mined)				   * the first transaction is mined)
+   * From MonolithDAO Token.sol					   * From MonolithDAO Token.sol
+   */								   */
+  function increaseApproval (address _spender, uint _addedVal	  function increaseApproval (address _spender, uint _addedVal
+    returns (bool success) {					    returns (bool success) {
+    allowed[msg.sender][_spender] = allowed[msg.sender][_spen	    allowed[msg.sender][_spender] = allowed[msg.sender][_spen
+    Approval(msg.sender, _spender, allowed[msg.sender][_spend	    Approval(msg.sender, _spender, allowed[msg.sender][_spend
+    return true;						    return true;
+  }								  }
+
+  function decreaseApproval (address _spender, uint _subtract	  function decreaseApproval (address _spender, uint _subtract
+    returns (bool success) {					    returns (bool success) {
+    uint oldValue = allowed[msg.sender][_spender];		    uint oldValue = allowed[msg.sender][_spender];
+    if (_subtractedValue > oldValue) {				    if (_subtractedValue > oldValue) {
+      allowed[msg.sender][_spender] = 0;			      allowed[msg.sender][_spender] = 0;
+    } else {							    } else {
+      allowed[msg.sender][_spender] = oldValue.sub(_subtracte	      allowed[msg.sender][_spender] = oldValue.sub(_subtracte
+    }								    }
+    Approval(msg.sender, _spender, allowed[msg.sender][_spend	    Approval(msg.sender, _spender, allowed[msg.sender][_spend
+    return true;						    return true;
+  }								  }
+
+}								}
+							      >	pragma solidity ^0.4.15;
+							      >
+							      >	import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
+							      >	import 'zeppelin-solidity/contracts/token/StandardToken.sol';
+
+contract LockableToken is StandardToken, Ownable {		contract LockableToken is StandardToken, Ownable {
+    bool public isLocked = true;				    bool public isLocked = true;
+    mapping (address => uint256) public lastMovement;		    mapping (address => uint256) public lastMovement;
+    event Burn(address _owner, uint256 _amount);		    event Burn(address _owner, uint256 _amount);
+
+
+    function unlock() public onlyOwner {			    function unlock() public onlyOwner {
+        isLocked = false;					        isLocked = false;
+    }								    }
+
+    function transfer(address _to, uint256 _amount) public re	    function transfer(address _to, uint256 _amount) public re
+        require(!isLocked);					        require(!isLocked);
+        lastMovement[msg.sender] = getTime();			        lastMovement[msg.sender] = getTime();
+        lastMovement[_to] = getTime();				        lastMovement[_to] = getTime();
+        return super.transfer(_to, _amount);			        return super.transfer(_to, _amount);
+    }								    }
+
+    function transferFrom(address _from, address _to, uint256	    function transferFrom(address _from, address _to, uint256
+        require(!isLocked);					        require(!isLocked);
+        lastMovement[_from] = getTime();			        lastMovement[_from] = getTime();
+        lastMovement[_to] = getTime();				        lastMovement[_to] = getTime();
+        super.transferFrom(_from, _to, _value);			        super.transferFrom(_from, _to, _value);
+    }								    }
+
+    function approve(address _spender, uint256 _value) public	    function approve(address _spender, uint256 _value) public
+        require(!isLocked);					        require(!isLocked);
+        super.approve(_spender, _value);			        super.approve(_spender, _value);
+    }								    }
+
+    function burnFrom(address _from, uint256 _value) public  	    function burnFrom(address _from, uint256 _value) public  
+        require(_value <= balances[_from]);			        require(_value <= balances[_from]);
+        require(_value <= allowed[_from][msg.sender]);		        require(_value <= allowed[_from][msg.sender]);
+        balances[_from] = balances[_from].sub(_value);		        balances[_from] = balances[_from].sub(_value);
+        allowed[_from][msg.sender] = allowed[_from][msg.sende	        allowed[_from][msg.sender] = allowed[_from][msg.sende
+
+        totalSupply = totalSupply.sub(_value);			        totalSupply = totalSupply.sub(_value);
+        Burn(_from, _value);					        Burn(_from, _value);
+        return true;						        return true;
+    }								    }
+
+    function getTime() internal returns (uint256) {		    function getTime() internal returns (uint256) {
+        // Just returns `now` value				        // Just returns `now` value
+        // This function is redefined in EthearnalRepTokenCro	        // This function is redefined in EthearnalRepTokenCro
+        // to allow testing contract behaviour at different t	        // to allow testing contract behaviour at different t
+        return now;						        return now;
+    }								    }
+
+}								}
+							      >	pragma solidity ^0.4.11;
+							      >
+							      >
+							      >	import './StandardToken.sol';
+							      >	import '../ownership/Ownable.sol';
+							      >
+							      >
+							      >
+							      >	/**
+							      >	 * @title Mintable token
+							      >	 * @dev Simple ERC20 Token example, with mintable token creat
+							      >	 * @dev Issue: * https://github.com/OpenZeppelin/zeppelin-sol
+							      >	 * Based on code by TokenMarketNet: https://github.com/TokenM
+							      >	 */
+
+contract MintableToken is StandardToken, Ownable {		contract MintableToken is StandardToken, Ownable {
+  event Mint(address indexed to, uint256 amount);		  event Mint(address indexed to, uint256 amount);
+  event MintFinished();						  event MintFinished();
+
+  bool public mintingFinished = false;				  bool public mintingFinished = false;
+
+
+  modifier canMint() {						  modifier canMint() {
+    require(!mintingFinished);					    require(!mintingFinished);
+    _;								    _;
+  }								  }
+
+  /**								  /**
+   * @dev Function to mint tokens				   * @dev Function to mint tokens
+   * @param _to The address that will receive the minted toke	   * @param _to The address that will receive the minted toke
+   * @param _amount The amount of tokens to mint.		   * @param _amount The amount of tokens to mint.
+   * @return A boolean that indicates if the operation was su	   * @return A boolean that indicates if the operation was su
+   */								   */
+  function mint(address _to, uint256 _amount) onlyOwner canMi	  function mint(address _to, uint256 _amount) onlyOwner canMi
+    totalSupply = totalSupply.add(_amount);			    totalSupply = totalSupply.add(_amount);
+    balances[_to] = balances[_to].add(_amount);			    balances[_to] = balances[_to].add(_amount);
+    Mint(_to, _amount);						    Mint(_to, _amount);
+    Transfer(0x0, _to, _amount);				    Transfer(0x0, _to, _amount);
+    return true;						    return true;
+  }								  }
+
+  /**								  /**
+   * @dev Function to stop minting new tokens.			   * @dev Function to stop minting new tokens.
+   * @return True if the operation was successful.		   * @return True if the operation was successful.
+   */								   */
+  function finishMinting() onlyOwner public returns (bool) {	  function finishMinting() onlyOwner public returns (bool) {
+    mintingFinished = true;					    mintingFinished = true;
+    MintFinished();						    MintFinished();
+    return true;						    return true;
+  }								  }
+}								}
+							      >	pragma solidity ^0.4.15;
+							      >
+							      >	import 'zeppelin-solidity/contracts/token/MintableToken.sol';
+							      >	import './LockableToken.sol';
+
+contract EthearnalRepToken is MintableToken, LockableToken {	contract EthearnalRepToken is MintableToken, LockableToken {
+    string public constant name = 'Ethearnal Rep Token';	    string public constant name = 'Ethearnal Rep Token';
+    string public constant symbol = 'ERT';			    string public constant symbol = 'ERT';
+    uint256 public constant decimals = 18;			    uint256 public constant decimals = 18;
+}								}
+							      <

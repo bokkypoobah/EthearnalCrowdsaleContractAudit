@@ -86,6 +86,8 @@ Excluded as this is used for testing:
 
 ### Flattened Files
 
+Note that the order of the contract and library units have changed in [323eb08](https://github.com/Ethearnal/SmartContracts/commit/323eb0842cb701bbf516473b6129315745550757).
+
 * [x] [code-review-flat/EthearnalRepToken_flat.md](code-review-flat/EthearnalRepToken_flat.md)
   * [x] library SafeMath
   * [x] contract Ownable

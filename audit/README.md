@@ -26,6 +26,8 @@ Commits
 * **LOW IMPORTANCE** In *EthearnalRepToken*, `decimals` should be defined as `uint8` instead of `uint256` as recommended in the
   recently finalised [ERC20 Token Standard](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20-token-standard.md)
   * [x] Fixed in [323eb08](https://github.com/Ethearnal/SmartContracts/commit/323eb0842cb701bbf516473b6129315745550757)
+* **LOW IMPORTANCE** In *MultiOwnable*, `getOwners()` should be declared constant
+* **LOW IMPORTANCE** In *Treasury*, consider making `teamWallet` public
 
 <br />
 

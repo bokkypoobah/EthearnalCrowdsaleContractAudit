@@ -5,6 +5,8 @@ SOURCEDIR=../../flat
 
 TOKENSOL=EthearnalRepToken_flat.sol
 TOKENJS=EthearnalRepToken_flat.js
+TREASURYSOL=Treasury_flat.sol
+TREASURYJS=Treasury_flat.js
 CROWDSALESOL=EthearnalRepTokenCrowdsale_flat.sol
 CROWDSALEJS=EthearnalRepTokenCrowdsale_flat.js
 

@@ -1,0 +1,2 @@
+tokenAddress=0xae62c7f15d5b7181f1eb7f436e80f61e877b364f
+treasuryAddress=0x171367f4d427567dab0dc38133c5dc3aad7001a7

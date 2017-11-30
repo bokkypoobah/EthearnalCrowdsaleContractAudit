@@ -20,10 +20,8 @@ contract EthearnalRepToken is MintableToken, LockableToken {
     string public constant name = 'Ethearnal Rep Token';
     // BK Ok
     string public constant symbol = 'ERT';
-    // BK NOTE - The following should be `uint8` instead of `uint256`, but no adverse effects have been observed from
-    // BK NOTE - using `uint256`
     // BK Ok
-    uint256 public constant decimals = 18;
+    uint8 public constant decimals = 18;
 }
 
 ```

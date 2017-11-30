@@ -4,6 +4,9 @@ Status: Work in progress
 
 ## Summary
 
+Commits
+[d60e2fc](https://github.com/Ethearnal/SmartContracts/commit/d60e2fca5e5e0a48f37be8170f08773b5c0d99d4) and
+[323eb08](https://github.com/Ethearnal/SmartContracts/commit/323eb0842cb701bbf516473b6129315745550757)
 
 ## Table Of Contents
 
@@ -15,11 +18,14 @@ Status: Work in progress
 
 * **LOW IMPORTANCE** In *IBallot*, the `FinishBallot` event is only logged if the voting results in a Yes vote. No event
   is logged if the voting results in a No vote
+  * [x] Fixed in [323eb08](https://github.com/Ethearnal/SmartContracts/commit/323eb0842cb701bbf516473b6129315745550757)
 * **LOW IMPORTANCE** In *IBallot*, `getQuorumPercent()` is defined with an empty body. It seems that this function should be
   overriden in the implementation of this function. Consider defining this function as an interface, e.g.,
   `function getQuorumPercent() public constant returns (uint256);`
+  * [x] Fixed in [323eb08](https://github.com/Ethearnal/SmartContracts/commit/323eb0842cb701bbf516473b6129315745550757)
 * **LOW IMPORTANCE** In *EthearnalRepToken*, `decimals` should be defined as `uint8` instead of `uint256` as recommended in the
   recently finalised [ERC20 Token Standard](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20-token-standard.md)
+  * [x] Fixed in [323eb08](https://github.com/Ethearnal/SmartContracts/commit/323eb0842cb701bbf516473b6129315745550757)
 
 <br />
 

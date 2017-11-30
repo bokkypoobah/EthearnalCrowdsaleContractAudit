@@ -57,11 +57,6 @@ contract IBallot {
         require(ballotStarted != 0);
         _;
     }
-    
-    function startBallot() public {
-        ballotStarted = getTime();
-        isVotingActive = true;
-    }
 
     function vote(bytes _vote) public onlyWhenBallotStarted {
         require(_vote.length > 0);
@@ -140,14 +135,13 @@ contract IBallot {
                 // do nothing, just deactivate voting
                 // BK Ok
                 isVotingActive = false;
+                FinishBallot(now);
             }
         }
         
     }
 
-    function getQuorumPercent() public constant returns (uint256) {
-
-    }
+    function getQuorumPercent() public constant returns (uint256);
 
     function getTime() internal returns (uint256) {
         // Just returns `now` value

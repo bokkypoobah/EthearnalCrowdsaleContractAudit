@@ -1,14 +1,16 @@
 IPCFILE=ipc:./testchain/geth.ipc
 PASSWORD=testtest
 
-SOURCEDIR=../../flat
+SOURCEDIR=../../contracts
 
-TOKENSOL=EthearnalRepToken_flat.sol
-TOKENJS=EthearnalRepToken_flat.js
-TREASURYSOL=Treasury_flat.sol
-TREASURYJS=Treasury_flat.js
-CROWDSALESOL=EthearnalRepTokenCrowdsale_flat.sol
-CROWDSALEJS=EthearnalRepTokenCrowdsale_flat.js
+TOKENSOL=EthearnalRepToken.sol
+TOKENJS=EthearnalRepToken.js
+TREASURYSOL=Treasury.sol
+TREASURYJS=Treasury.js
+VOTINGPROXYSOL=VotingProxy.sol
+VOTINGPROXYJS=VotingProxy.js
+CROWDSALESOL=EthearnalRepTokenCrowdsale.sol
+CROWDSALEJS=EthearnalRepTokenCrowdsale.js
 
 DEPLOYMENTDATA=deploymentData.txt
 

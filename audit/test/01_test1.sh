@@ -16,6 +16,8 @@ TOKENSOL=`grep ^TOKENSOL= settings.txt | sed "s/^.*=//"`
 TOKENJS=`grep ^TOKENJS= settings.txt | sed "s/^.*=//"`
 TREASURYSOL=`grep ^TREASURYSOL= settings.txt | sed "s/^.*=//"`
 TREASURYJS=`grep ^TREASURYJS= settings.txt | sed "s/^.*=//"`
+VOTINGPROXYSOL=`grep ^VOTINGPROXYSOL= settings.txt | sed "s/^.*=//"`
+VOTINGPROXYJS=`grep ^VOTINGPROXYJS= settings.txt | sed "s/^.*=//"`
 CROWDSALESOL=`grep ^CROWDSALESOL= settings.txt | sed "s/^.*=//"`
 CROWDSALEJS=`grep ^CROWDSALEJS= settings.txt | sed "s/^.*=//"`
 
@@ -41,6 +43,8 @@ printf "TOKENSOL           = '$TOKENSOL'\n" | tee -a $TEST1OUTPUT
 printf "TOKENJS            = '$TOKENJS'\n" | tee -a $TEST1OUTPUT
 printf "TREASURYSOL        = '$TREASURYSOL'\n" | tee -a $TEST1OUTPUT
 printf "TREASURYJS         = '$TREASURYJS'\n" | tee -a $TEST1OUTPUT
+printf "VOTINGPROXYSOL     = '$VOTINGPROXYSOL'\n" | tee -a $TEST1OUTPUT
+printf "VOTINGPROXYJS      = '$VOTINGPROXYJS'\n" | tee -a $TEST1OUTPUT
 printf "CROWDSALESOL       = '$CROWDSALESOL'\n" | tee -a $TEST1OUTPUT
 printf "CROWDSALEJS        = '$CROWDSALEJS'\n" | tee -a $TEST1OUTPUT
 printf "DEPLOYMENTDATA     = '$DEPLOYMENTDATA'\n" | tee -a $TEST1OUTPUT
@@ -53,53 +57,55 @@ printf "DATE_PRESALE_END   = '$DATE_PRESALE_END' '$DATE_PRESALE_END_S'\n" | tee 
 
 # Make copy of SOL file and modify start and end times ---
 # `cp modifiedContracts/SnipCoin.sol .`
-`cp $SOURCEDIR/$TOKENSOL .`
-`cp $SOURCEDIR/$TREASURYSOL .`
-`cp $SOURCEDIR/$CROWDSALESOL .`
+`cp -rp $SOURCEDIR/* .`
+`cp -rp ../zeppelin-contracts/* .`
 
 # --- Modify parameters ---
+`perl -pi -e "s/zeppelin-solidity\/contracts\///" *.sol`
 `perl -pi -e "s/DATE_PRESALE_START \= 1512050400;.*$/DATE_PRESALE_START \= $DATE_PRESALE_START; \/\/ $DATE_PRESALE_START_S/" $CROWDSALESOL`
 `perl -pi -e "s/DATE_PRESALE_END   \= 1513260000;.*$/DATE_PRESALE_END   \= $DATE_PRESALE_END; \/\/ $DATE_PRESALE_END_S/" $CROWDSALESOL`
 `perl -pi -e "s/getOwners\(\) public returns/getOwners\(\) public constant returns/" $TREASURYSOL`
 
-DIFFS1=`diff $SOURCEDIR/$TOKENSOL $TOKENSOL`
-echo "--- Differences $SOURCEDIR/$TOKENSOL $TOKENSOL ---" | tee -a $TEST1OUTPUT
-echo "$DIFFS1" | tee -a $TEST1OUTPUT
+for FILE in Ballot.sol EthearnalRepTokenCrowdsale.sol LockableToken.sol MultiOwnable.sol Treasury.sol EthearnalRepToken.sol IBallot.sol RefundInvestorsBallot.sol VotingProxy.sol
+do
+  DIFFS1=`diff $SOURCEDIR/$FILE $FILE`
+  echo "--- Differences $SOURCEDIR/$FILE $FILE ---" | tee -a $TEST1OUTPUT
+  echo "$DIFFS1" | tee -a $TEST1OUTPUT
+done
 
-DIFFS1=`diff $SOURCEDIR/$TREASURYSOL $TREASURYSOL`
-echo "--- Differences $SOURCEDIR/$TREASURYSOL $TREASURYSOL ---" | tee -a $TEST1OUTPUT
-echo "$DIFFS1" | tee -a $TEST1OUTPUT
+solc_0.4.16 --version | tee -a $TEST1OUTPUT
 
-DIFFS1=`diff $SOURCEDIR/$CROWDSALESOL $CROWDSALESOL`
-echo "--- Differences $SOURCEDIR/$CROWDSALESOL $CROWDSALESOL ---" | tee -a $TEST1OUTPUT
-echo "$DIFFS1" | tee -a $TEST1OUTPUT
-
-solc_0.4.18 --version | tee -a $TEST1OUTPUT
-
-echo "var tokenOutput=`solc_0.4.18 --optimize --pretty-json --combined-json abi,bin,interface $TOKENSOL`;" > $TOKENJS
-echo "var treasuryOutput=`solc_0.4.18 --optimize --pretty-json --combined-json abi,bin,interface $TREASURYSOL`;" > $TREASURYJS
-# echo "var saleOutput=`solc_0.4.18 --optimize --pretty-json --combined-json abi,bin,interface $CROWDSALESOL`;" > $CROWDSALEJS
-
+# --pretty-json does not work with 0.4.16
+echo "var tokenOutput=`solc_0.4.16 --optimize --combined-json abi,bin,interface $TOKENSOL`;" > $TOKENJS
+echo "var treasuryOutput=`solc_0.4.16 --optimize --combined-json abi,bin,interface $TREASURYSOL`;" > $TREASURYJS
+echo "var votingProxyOutput=`solc_0.4.16 --optimize --combined-json abi,bin,interface $VOTINGPROXYSOL`;" > $VOTINGPROXYJS
+echo "var crowdsaleOutput=`solc_0.4.16 --optimize --combined-json abi,bin,interface $CROWDSALESOL`;" > $CROWDSALEJS
 
 geth --verbosity 3 attach $GETHATTACHPOINT << EOF | tee -a $TEST1OUTPUT
 loadScript("$TOKENJS");
 loadScript("$TREASURYJS");
-// loadScript("$CROWDSALEJS");
+loadScript("$VOTINGPROXYJS");
+loadScript("$CROWDSALEJS");
 loadScript("functions.js");
 
-// var libAbi = JSON.parse(tokenOutput.contracts["$TOKENSOL:SafeMath"].abi);
-// var libBin = "0x" + tokenOutput.contracts["$TOKENSOL:SafeMath"].bin;
 var tokenAbi = JSON.parse(tokenOutput.contracts["$TOKENSOL:EthearnalRepToken"].abi);
 var tokenBin = "0x" + tokenOutput.contracts["$TOKENSOL:EthearnalRepToken"].bin;
 var treasuryAbi = JSON.parse(treasuryOutput.contracts["$TREASURYSOL:Treasury"].abi);
 var treasuryBin = "0x" + treasuryOutput.contracts["$TREASURYSOL:Treasury"].bin;
+var votingProxyAbi = JSON.parse(votingProxyOutput.contracts["$VOTINGPROXYSOL:VotingProxy"].abi);
+var votingProxyBin = "0x" + votingProxyOutput.contracts["$VOTINGPROXYSOL:VotingProxy"].bin;
+var crowdsaleAbi = JSON.parse(crowdsaleOutput.contracts["$CROWDSALESOL:EthearnalRepTokenCrowdsale"].abi);
+var crowdsaleBin = "0x" + crowdsaleOutput.contracts["$CROWDSALESOL:EthearnalRepTokenCrowdsale"].bin;
 
-// console.log("DATA: libAbi=" + JSON.stringify(libAbi));
-// console.log("DATA: libBin=" + JSON.stringify(libBin));
 // console.log("DATA: tokenAbi=" + JSON.stringify(tokenAbi));
 // console.log("DATA: tokenBin=" + JSON.stringify(tokenBin));
 // console.log("DATA: treasuryAbi=" + JSON.stringify(treasuryAbi));
 // console.log("DATA: treasuryBin=" + JSON.stringify(treasuryBin));
+// console.log("DATA: votingProxyAbi=" + JSON.stringify(votingProxyAbi));
+// console.log("DATA: votingProxyBin=" + JSON.stringify(votingProxyBin));
+// console.log("DATA: crowdsaleAbi=" + JSON.stringify(crowdsaleAbi));
+// console.log("DATA: crowdsaleBin=" + JSON.stringify(crowdsaleBin));
+
 
 unlockAccounts("$PASSWORD");
 printBalances();
@@ -109,7 +115,7 @@ console.log("RESULT: ");
 // -----------------------------------------------------------------------------
 var tokenMessage = "Deploy Token Contract";
 // -----------------------------------------------------------------------------
-console.log("RESULT: " + tokenMessage);
+console.log("RESULT: --- " + tokenMessage + " ---");
 var tokenContract = web3.eth.contract(tokenAbi);
 // console.log(JSON.stringify(tokenContract));
 var tokenTx = null;
@@ -131,8 +137,8 @@ var token = tokenContract.new({from: contractOwnerAccount, data: tokenBin, gas: 
 while (txpool.status.pending > 0) {
 }
 printBalances();
-printTxData("tokenAddress=" + tokenAddress, tokenTx);
 failIfTxStatusError(tokenTx, tokenMessage);
+printTxData("tokenAddress=" + tokenAddress, tokenTx);
 printTokenContractDetails();
 console.log("RESULT: ");
 
@@ -140,7 +146,7 @@ console.log("RESULT: ");
 // -----------------------------------------------------------------------------
 var treasuryMessage = "Deploy Treasury Contract";
 // -----------------------------------------------------------------------------
-console.log("RESULT: " + treasuryMessage);
+console.log("RESULT: --- " + treasuryMessage + " ---");
 var treasuryContract = web3.eth.contract(treasuryAbi);
 // console.log(JSON.stringify(treasuryContract));
 var treasuryTx = null;
@@ -162,22 +168,90 @@ var treasury = treasuryContract.new(wallet, {from: contractOwnerAccount, data: t
 while (txpool.status.pending > 0) {
 }
 printBalances();
-printTxData("treasuryAddress=" + treasuryAddress, treasuryTx);
 failIfTxStatusError(treasuryTx, treasuryMessage);
+printTxData("treasuryAddress=" + treasuryAddress, treasuryTx);
 printTreasuryContractDetails();
+console.log("RESULT: ");
+
+
+// -----------------------------------------------------------------------------
+var votingProxyMessage = "Deploy Voting Proxy Contract";
+// -----------------------------------------------------------------------------
+console.log("RESULT: --- " + votingProxyMessage + " ---");
+var votingProxyContract = web3.eth.contract(votingProxyAbi);
+// console.log(JSON.stringify(votingProxyContract));
+var votingProxyTx = null;
+var votingProxyAddress = null;
+var votingProxy = votingProxyContract.new(treasuryAddress, tokenAddress, {from: contractOwnerAccount, data: votingProxyBin, gas: 6000000, gasPrice: defaultGasPrice},
+  function(e, contract) {
+    if (!e) {
+      if (!contract.address) {
+        votingProxyTx = contract.transactionHash;
+      } else {
+        votingProxyAddress = contract.address;
+        addAccount(votingProxyAddress, "VotingProxy");
+        addVotingProxyContractAddressAndAbi(votingProxyAddress, votingProxyAbi);
+        console.log("DATA: votingProxyAddress=" + votingProxyAddress);
+      }
+    }
+  }
+);
+while (txpool.status.pending > 0) {
+}
+printBalances();
+printTxData("votingProxyAddress=" + votingProxyAddress, votingProxyTx);
+failIfTxStatusError(votingProxyTx, votingProxyMessage);
+printVotingProxyContractDetails();
 console.log("RESULT: ");
 
 
 // -----------------------------------------------------------------------------
 var setupTreasuryMessage = "Setup Treasury";
 // -----------------------------------------------------------------------------
-console.log("RESULT: " + setupTreasuryMessage);
+console.log("RESULT: --- " + setupTreasuryMessage + " ---");
 var setupTreasury1Tx = treasury.setupOwners([owner1, owner2], {from: contractOwnerAccount, gas: 400000, gasPrice: defaultGasPrice});
+var setupTreasury2Tx = treasury.setTokenContract(tokenAddress, {from: contractOwnerAccount, gas: 400000, gasPrice: defaultGasPrice});
+var setupTreasury3Tx = treasury.setVotingProxy(votingProxyAddress, {from: contractOwnerAccount, gas: 400000, gasPrice: defaultGasPrice});
 while (txpool.status.pending > 0) {
 }
 printBalances();
+failIfTxStatusError(setupTreasury1Tx, setupTreasuryMessage + " - treasury.setupOwners([owner1, owner2])");
+failIfTxStatusError(setupTreasury2Tx, setupTreasuryMessage + " - treasury.setTokenContract(token)");
+failIfTxStatusError(setupTreasury3Tx, setupTreasuryMessage + " - treasury.setVotingProxy(votingProxy)");
 printTxData("setupTreasury1Tx", setupTreasury1Tx);
-failIfTxStatusError(setupTreasury1Tx, setupTreasuryMessage + " - setupOwners([owner1, owner2])");
+printTxData("setupTreasury2Tx", setupTreasury2Tx);
+printTxData("setupTreasury3Tx", setupTreasury3Tx);
+printTreasuryContractDetails();
+console.log("RESULT: ");
+
+
+// -----------------------------------------------------------------------------
+var crowdsaleMessage = "Deploy Crowdsale Contract";
+// -----------------------------------------------------------------------------
+console.log("RESULT: --- " + crowdsaleMessage + " ---");
+var crowdsaleContract = web3.eth.contract(crowdsaleAbi);
+// console.log(JSON.stringify(crowdsaleContract));
+var crowdsaleTx = null;
+var crowdsaleAddress = null;
+var crowdsale = crowdsaleContract.new([owner1, owner2], treasuryAddress, teamWallet, {from: contractOwnerAccount, data: crowdsaleBin, gas: 6000000, gasPrice: defaultGasPrice},
+  function(e, contract) {
+    if (!e) {
+      if (!contract.address) {
+        crowdsaleTx = contract.transactionHash;
+      } else {
+        crowdsaleAddress = contract.address;
+        addAccount(crowdsaleAddress, "Crowdsale");
+        addTreasuryContractAddressAndAbi(crowdsaleAddress, crowdsaleAbi);
+        console.log("DATA: crowdsaleAddress=" + crowdsaleAddress);
+      }
+    }
+  }
+);
+while (txpool.status.pending > 0) {
+}
+printBalances();
+failIfTxStatusError(crowdsaleTx, crowdsaleMessage);
+printTxData("crowdsaleAddress=" + crowdsaleAddress, crowdsaleTx);
 printTreasuryContractDetails();
 console.log("RESULT: ");
 

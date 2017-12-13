@@ -1,6 +1,6 @@
  # Account                                             EtherBalanceChange              Token Name
 -- ------------------------------------------ --------------------------- ------------------ ---------------------------
- 0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e        9.000000000000000000           0.000000 Account #0 - Miner
+ 0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e        3.000000000000000000           0.000000 Account #0 - Miner
  1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433        0.000000000000000000           0.000000 Account #1 - Contract Owner
  2 0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976        0.000000000000000000           0.000000 Account #2 - Wallet
  3 0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0        0.000000000000000000           0.000000 Account #3
@@ -12,16 +12,17 @@
  9 0xa99a0ae3354c06b1459fd441a32a3f71005d7da0        0.000000000000000000           0.000000 Account #9
 10 0xaaaa9de1e6c564446ebca0fd102d8bd92093c756        0.000000000000000000           0.000000 Account #10 - Owner #1
 11 0xabba43e7594e3b76afb157989e93c6621497fd4b        0.000000000000000000           0.000000 Account #11 - Owner #2
+12 0xacca534c9f62ab495bd986e002ddf0f054caae4f        0.000000000000000000           0.000000 Account #12 - Team Wallet
 -- ------------------------------------------ --------------------------- ------------------ ---------------------------
                                                                                     0.000000 Total Token Balances
 -- ------------------------------------------ --------------------------- ------------------ ---------------------------
 
 
-Deploy Token Contract
+--- Deploy Token Contract ---
  # Account                                             EtherBalanceChange              Token Name
 -- ------------------------------------------ --------------------------- ------------------ ---------------------------
- 0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e       15.001041055000000000           0.000000000000000000 Account #0 - Miner
- 1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -0.001041055000000000           0.000000000000000000 Account #1 - Contract Owner
+ 0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e        9.001152333000000000           0.000000000000000000 Account #0 - Miner
+ 1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -0.001152333000000000           0.000000000000000000 Account #1 - Contract Owner
  2 0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976        0.000000000000000000           0.000000000000000000 Account #2 - Wallet
  3 0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0        0.000000000000000000           0.000000000000000000 Account #3
  4 0xa44a08d3f6933c69212114bb66e2df1813651844        0.000000000000000000           0.000000000000000000 Account #4
@@ -32,14 +33,15 @@ Deploy Token Contract
  9 0xa99a0ae3354c06b1459fd441a32a3f71005d7da0        0.000000000000000000           0.000000000000000000 Account #9
 10 0xaaaa9de1e6c564446ebca0fd102d8bd92093c756        0.000000000000000000           0.000000000000000000 Account #10 - Owner #1
 11 0xabba43e7594e3b76afb157989e93c6621497fd4b        0.000000000000000000           0.000000000000000000 Account #11 - Owner #2
-12 0xae62c7f15d5b7181f1eb7f436e80f61e877b364f        0.000000000000000000           0.000000000000000000 Token 'ERT' 'Ethearnal Rep Token'
+12 0xacca534c9f62ab495bd986e002ddf0f054caae4f        0.000000000000000000           0.000000000000000000 Account #12 - Team Wallet
+13 0xa83b361b5b868fc289d586c3a1d3712d8075d8f8        0.000000000000000000           0.000000000000000000 Token 'ERT' 'Ethearnal Rep Token'
 -- ------------------------------------------ --------------------------- ------------------ ---------------------------
                                                                                     0.000000000000000000 Total Token Balances
 -- ------------------------------------------ --------------------------- ------------------ ---------------------------
 
-tokenAddress=0xae62c7f15d5b7181f1eb7f436e80f61e877b364f status=0x1 Success gas=6000000 gasUsed=1041055 costETH=0.001041055 costUSD=0.4891084601 @ ETH/USD=469.82 gasPrice=1 gwei block=2928 txIx=0 txId=0xc469bb4fab690a7488c3422d7dbed0038dd48538c42d464dd0c265be4f0c41b2 @ 1512057227 Thu, 30 Nov 2017 15:53:47 UTC
 PASS Deploy Token Contract
-tokenContractAddress=0xae62c7f15d5b7181f1eb7f436e80f61e877b364f
+tokenAddress=0xa83b361b5b868fc289d586c3a1d3712d8075d8f8 status=0x1 Success gas=6000000 gasUsed=1152333 costETH=0.001152333 costUSD=0.54138909006 @ ETH/USD=469.82 gasPrice=1 gwei block=761 txIx=0 txId=0xf5925758c0585844468fb5994f08671ff0c529e3bf03a6c115b197cac466c955 @ 1513142039 Wed, 13 Dec 2017 05:13:59 UTC
+tokenContractAddress=0xa83b361b5b868fc289d586c3a1d3712d8075d8f8
 token.owner=0xa11aae29840fbb5c86e6fd4cf809eba183aef433
 token.name=Ethearnal Rep Token
 token.symbol=ERT
@@ -48,11 +50,11 @@ token.totalSupply=0
 token.isLocked=true
 token.mintingFinished=false
 
-Deploy Treasury Contract
+--- Deploy Treasury Contract ---
  # Account                                             EtherBalanceChange              Token Name
 -- ------------------------------------------ --------------------------- ------------------ ---------------------------
- 0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e       21.002104478000000000           0.000000000000000000 Account #0 - Miner
- 1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -0.002104478000000000           0.000000000000000000 Account #1 - Contract Owner
+ 0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e       15.002285655000000000           0.000000000000000000 Account #0 - Miner
+ 1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -0.002285655000000000           0.000000000000000000 Account #1 - Contract Owner
  2 0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976        0.000000000000000000           0.000000000000000000 Account #2 - Wallet
  3 0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0        0.000000000000000000           0.000000000000000000 Account #3
  4 0xa44a08d3f6933c69212114bb66e2df1813651844        0.000000000000000000           0.000000000000000000 Account #4
@@ -63,30 +65,22 @@ Deploy Treasury Contract
  9 0xa99a0ae3354c06b1459fd441a32a3f71005d7da0        0.000000000000000000           0.000000000000000000 Account #9
 10 0xaaaa9de1e6c564446ebca0fd102d8bd92093c756        0.000000000000000000           0.000000000000000000 Account #10 - Owner #1
 11 0xabba43e7594e3b76afb157989e93c6621497fd4b        0.000000000000000000           0.000000000000000000 Account #11 - Owner #2
-12 0xae62c7f15d5b7181f1eb7f436e80f61e877b364f        0.000000000000000000           0.000000000000000000 Token 'ERT' 'Ethearnal Rep Token'
-13 0x171367f4d427567dab0dc38133c5dc3aad7001a7        0.000000000000000000           0.000000000000000000 Treasury
+12 0xacca534c9f62ab495bd986e002ddf0f054caae4f        0.000000000000000000           0.000000000000000000 Account #12 - Team Wallet
+13 0xa83b361b5b868fc289d586c3a1d3712d8075d8f8        0.000000000000000000           0.000000000000000000 Token 'ERT' 'Ethearnal Rep Token'
+14 0x43ac93ca1533f31e82ae941b6f477096cf9a28e6        0.000000000000000000           0.000000000000000000 Treasury
 -- ------------------------------------------ --------------------------- ------------------ ---------------------------
                                                                                     0.000000000000000000 Total Token Balances
 -- ------------------------------------------ --------------------------- ------------------ ---------------------------
 
-treasuryAddress=0x171367f4d427567dab0dc38133c5dc3aad7001a7 status=0x1 Success gas=6000000 gasUsed=1063423 costETH=0.001063423 costUSD=0.49961739386 @ ETH/USD=469.82 gasPrice=1 gwei block=2930 txIx=0 txId=0xbaaec87cb25506ec30fffca0dd029ffd6c1f8e616a02ed8aba3b48800e09fbae @ 1512057260 Thu, 30 Nov 2017 15:54:20 UTC
 PASS Deploy Treasury Contract
-treasuryContractAddress=0x171367f4d427567dab0dc38133c5dc3aad7001a7
-treasury.getOwners=
-treasury.weiWithdrawed=0 0 ETH
-treasury.weiUnlocked=0 0 ETH
-treasury.isCrowdsaleFinished=false
-treasury.crowdsaleContract=0x0000000000000000000000000000000000000000
-treasury.tokenContract=0x0000000000000000000000000000000000000000
-treasury.isRefundsEnabled=false
-treasury.withdrawChunk=0 0 ETH
-treasury.votingProxyContract=0x0000000000000000000000000000000000000000
+treasuryAddress=0x43ac93ca1533f31e82ae941b6f477096cf9a28e6 status=0x1 Success gas=6000000 gasUsed=1133322 costETH=0.001133322 costUSD=0.53245734204 @ ETH/USD=469.82 gasPrice=1 gwei block=763 txIx=0 txId=0x31627e44364d7e0e777af581612415f672a9db499a4656c485103279cdddd100 @ 1513142075 Wed, 13 Dec 2017 05:14:35 UTC
+treasuryContractAddress=0x43ac93ca1533f31e82ae941b6f477096cf9a28e6
 
-Setup Treasury
+--- Deploy Voting Proxy Contract ---
  # Account                                             EtherBalanceChange              Token Name
 -- ------------------------------------------ --------------------------- ------------------ ---------------------------
- 0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e       27.002231927000000000           0.000000000000000000 Account #0 - Miner
- 1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -0.002231927000000000           0.000000000000000000 Account #1 - Contract Owner
+ 0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e       21.004769876000000000           0.000000000000000000 Account #0 - Miner
+ 1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -0.004769876000000000           0.000000000000000000 Account #1 - Contract Owner
  2 0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976        0.000000000000000000           0.000000000000000000 Account #2 - Wallet
  3 0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0        0.000000000000000000           0.000000000000000000 Account #3
  4 0xa44a08d3f6933c69212114bb66e2df1813651844        0.000000000000000000           0.000000000000000000 Account #4
@@ -97,22 +91,73 @@ Setup Treasury
  9 0xa99a0ae3354c06b1459fd441a32a3f71005d7da0        0.000000000000000000           0.000000000000000000 Account #9
 10 0xaaaa9de1e6c564446ebca0fd102d8bd92093c756        0.000000000000000000           0.000000000000000000 Account #10 - Owner #1
 11 0xabba43e7594e3b76afb157989e93c6621497fd4b        0.000000000000000000           0.000000000000000000 Account #11 - Owner #2
-12 0xae62c7f15d5b7181f1eb7f436e80f61e877b364f        0.000000000000000000           0.000000000000000000 Token 'ERT' 'Ethearnal Rep Token'
-13 0x171367f4d427567dab0dc38133c5dc3aad7001a7        0.000000000000000000           0.000000000000000000 Treasury
+12 0xacca534c9f62ab495bd986e002ddf0f054caae4f        0.000000000000000000           0.000000000000000000 Account #12 - Team Wallet
+13 0xa83b361b5b868fc289d586c3a1d3712d8075d8f8        0.000000000000000000           0.000000000000000000 Token 'ERT' 'Ethearnal Rep Token'
+14 0x43ac93ca1533f31e82ae941b6f477096cf9a28e6        0.000000000000000000           0.000000000000000000 Treasury
+15 0x354059c8c025b0bb359d8a9a6afaf1e550b2ea4b        0.000000000000000000           0.000000000000000000 VotingProxy
 -- ------------------------------------------ --------------------------- ------------------ ---------------------------
                                                                                     0.000000000000000000 Total Token Balances
 -- ------------------------------------------ --------------------------- ------------------ ---------------------------
 
-setupTreasury1Tx status=0x1 Success gas=400000 gasUsed=127449 costETH=0.000127449 costUSD=0.05987808918 @ ETH/USD=469.82 gasPrice=1 gwei block=2932 txIx=0 txId=0xb373afae500b63475027b76c3464a5bba9cfddfd0d752255239f8ec40804e388 @ 1512057279 Thu, 30 Nov 2017 15:54:39 UTC
-PASS Setup Treasury - setupOwners([owner1, owner2])
-treasuryContractAddress=0x171367f4d427567dab0dc38133c5dc3aad7001a7
-treasury.getOwners=0xaaaa9de1e6c564446ebca0fd102d8bd92093c756,0xabba43e7594e3b76afb157989e93c6621497fd4b
-treasury.weiWithdrawed=0 0 ETH
-treasury.weiUnlocked=0 0 ETH
-treasury.isCrowdsaleFinished=false
-treasury.crowdsaleContract=0x0000000000000000000000000000000000000000
-treasury.tokenContract=0x0000000000000000000000000000000000000000
-treasury.isRefundsEnabled=false
-treasury.withdrawChunk=0 0 ETH
-treasury.votingProxyContract=0x0000000000000000000000000000000000000000
+votingProxyAddress=0x354059c8c025b0bb359d8a9a6afaf1e550b2ea4b status=0x1 Success gas=6000000 gasUsed=2484221 costETH=0.002484221 costUSD=1.16713671022 @ ETH/USD=469.82 gasPrice=1 gwei block=765 txIx=0 txId=0xa81c0a41f95ad5ef1ca775f80c85541813f9251e3a30d97e5b01118cebf58a83 @ 1513142110 Wed, 13 Dec 2017 05:15:10 UTC
+PASS Deploy Voting Proxy Contract
+votingProxyContractAddress=0x354059c8c025b0bb359d8a9a6afaf1e550b2ea4b
+
+--- Setup Treasury ---
+ # Account                                             EtherBalanceChange              Token Name
+-- ------------------------------------------ --------------------------- ------------------ ---------------------------
+ 0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e       27.004943982000000000           0.000000000000000000 Account #0 - Miner
+ 1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -0.004943982000000000           0.000000000000000000 Account #1 - Contract Owner
+ 2 0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976        0.000000000000000000           0.000000000000000000 Account #2 - Wallet
+ 3 0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0        0.000000000000000000           0.000000000000000000 Account #3
+ 4 0xa44a08d3f6933c69212114bb66e2df1813651844        0.000000000000000000           0.000000000000000000 Account #4
+ 5 0xa55a151eb00fded1634d27d1127b4be4627079ea        0.000000000000000000           0.000000000000000000 Account #5
+ 6 0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9        0.000000000000000000           0.000000000000000000 Account #6
+ 7 0xa77a2b9d4b1c010a22a7c565dc418cef683dbcec        0.000000000000000000           0.000000000000000000 Account #7
+ 8 0xa88a05d2b88283ce84c8325760b72a64591279a2        0.000000000000000000           0.000000000000000000 Account #8
+ 9 0xa99a0ae3354c06b1459fd441a32a3f71005d7da0        0.000000000000000000           0.000000000000000000 Account #9
+10 0xaaaa9de1e6c564446ebca0fd102d8bd92093c756        0.000000000000000000           0.000000000000000000 Account #10 - Owner #1
+11 0xabba43e7594e3b76afb157989e93c6621497fd4b        0.000000000000000000           0.000000000000000000 Account #11 - Owner #2
+12 0xacca534c9f62ab495bd986e002ddf0f054caae4f        0.000000000000000000           0.000000000000000000 Account #12 - Team Wallet
+13 0xa83b361b5b868fc289d586c3a1d3712d8075d8f8        0.000000000000000000           0.000000000000000000 Token 'ERT' 'Ethearnal Rep Token'
+14 0x43ac93ca1533f31e82ae941b6f477096cf9a28e6        0.000000000000000000           0.000000000000000000 Treasury
+15 0x354059c8c025b0bb359d8a9a6afaf1e550b2ea4b        0.000000000000000000           0.000000000000000000 VotingProxy
+-- ------------------------------------------ --------------------------- ------------------ ---------------------------
+                                                                                    0.000000000000000000 Total Token Balances
+-- ------------------------------------------ --------------------------- ------------------ ---------------------------
+
+PASS Setup Treasury - treasury.setupOwners([owner1, owner2])
+FAIL Setup Treasury - treasury.setTokenContract(token)
+FAIL Setup Treasury - treasury.setVotingProxy(votingProxy)
+setupTreasury1Tx status=0x1 Success gas=400000 gasUsed=127450 costETH=0.00012745 costUSD=0.059878559 @ ETH/USD=469.82 gasPrice=1 gwei block=767 txIx=0 txId=0xa1f5625f277a31e66d4effb530f9bb941c844128fcd5dbe3ac45322e6c274cf7 @ 1513142125 Wed, 13 Dec 2017 05:15:25 UTC
+setupTreasury2Tx status=0x0 Failure gas=400000 gasUsed=23427 costETH=0.000023427 costUSD=0.01100647314 @ ETH/USD=469.82 gasPrice=1 gwei block=767 txIx=1 txId=0x74f0711506fc51fe15a6cfa78ed3f5b0f03bf40414c2ff976e97ee0214c8a5ce @ 1513142125 Wed, 13 Dec 2017 05:15:25 UTC
+setupTreasury3Tx status=0x0 Failure gas=400000 gasUsed=23229 costETH=0.000023229 costUSD=0.01091344878 @ ETH/USD=469.82 gasPrice=1 gwei block=767 txIx=2 txId=0x2e38fac01a2f6f36b2b9bbde1947c74e66705ddc0a72ee9fcb558cb3fa8d8d7d @ 1513142125 Wed, 13 Dec 2017 05:15:25 UTC
+treasuryContractAddress=0x43ac93ca1533f31e82ae941b6f477096cf9a28e6
+
+--- Deploy Crowdsale Contract ---
+ # Account                                             EtherBalanceChange              Token Name
+-- ------------------------------------------ --------------------------- ------------------ ---------------------------
+ 0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e       33.005571980000000000           0.000000000000000000 Account #0 - Miner
+ 1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -0.005571980000000000           0.000000000000000000 Account #1 - Contract Owner
+ 2 0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976        0.000000000000000000           0.000000000000000000 Account #2 - Wallet
+ 3 0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0        0.000000000000000000           0.000000000000000000 Account #3
+ 4 0xa44a08d3f6933c69212114bb66e2df1813651844        0.000000000000000000           0.000000000000000000 Account #4
+ 5 0xa55a151eb00fded1634d27d1127b4be4627079ea        0.000000000000000000           0.000000000000000000 Account #5
+ 6 0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9        0.000000000000000000           0.000000000000000000 Account #6
+ 7 0xa77a2b9d4b1c010a22a7c565dc418cef683dbcec        0.000000000000000000           0.000000000000000000 Account #7
+ 8 0xa88a05d2b88283ce84c8325760b72a64591279a2        0.000000000000000000           0.000000000000000000 Account #8
+ 9 0xa99a0ae3354c06b1459fd441a32a3f71005d7da0        0.000000000000000000           0.000000000000000000 Account #9
+10 0xaaaa9de1e6c564446ebca0fd102d8bd92093c756        0.000000000000000000           0.000000000000000000 Account #10 - Owner #1
+11 0xabba43e7594e3b76afb157989e93c6621497fd4b        0.000000000000000000           0.000000000000000000 Account #11 - Owner #2
+12 0xacca534c9f62ab495bd986e002ddf0f054caae4f        0.000000000000000000           0.000000000000000000 Account #12 - Team Wallet
+13 0xa83b361b5b868fc289d586c3a1d3712d8075d8f8        0.000000000000000000           0.000000000000000000 Token 'ERT' 'Ethearnal Rep Token'
+14 0x43ac93ca1533f31e82ae941b6f477096cf9a28e6        0.000000000000000000           0.000000000000000000 Treasury
+15 0x354059c8c025b0bb359d8a9a6afaf1e550b2ea4b        0.000000000000000000           0.000000000000000000 VotingProxy
+-- ------------------------------------------ --------------------------- ------------------ ---------------------------
+                                                                                    0.000000000000000000 Total Token Balances
+-- ------------------------------------------ --------------------------- ------------------ ---------------------------
+
+FAIL Deploy Crowdsale Contract
+crowdsaleAddress=null status=0x0 Failure gas=6000000 gasUsed=627998 costETH=0.000627998 costUSD=0.29504602036 @ ETH/USD=469.82 gasPrice=1 gwei block=769 txIx=0 txId=0xadd9a62da5e74a7946fe122d282aad8f076f464445adf46a77720a80a0a1fb35 @ 1513142139 Wed, 13 Dec 2017 05:15:39 UTC
+treasuryContractAddress=0x43ac93ca1533f31e82ae941b6f477096cf9a28e6
 

@@ -1,15 +1,6 @@
-# EthearnalRepTokenCrowdsale
-
-Source file [../../contracts/EthearnalRepTokenCrowdsale.sol](../../contracts/EthearnalRepTokenCrowdsale.sol).
-
-<br />
-
-<hr />
-
-```javascript
 pragma solidity ^0.4.15;
 
-import 'zeppelin-solidity/contracts/math/SafeMath.sol';
+import 'math/SafeMath.sol';
 import './EthearnalRepToken.sol';
 import './Treasury.sol';
 import "./MultiOwnable.sol";
@@ -258,7 +249,6 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
             isFinalized = true;
             mintTeamTokens();
             token.unlock();
-            // BK Ok
             treasuryContract.setCrowdsaleFinished();
         }
     }
@@ -297,5 +287,3 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
     }
 
 }
-
-```

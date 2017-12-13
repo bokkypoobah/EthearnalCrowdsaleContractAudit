@@ -1,19 +1,10 @@
-# Treasury
-
-Source file [../../contracts/Treasury.sol](../../contracts/Treasury.sol).
-
-<br />
-
-<hr />
-
-```javascript
 pragma solidity ^0.4.15;
 
 import './MultiOwnable.sol';
 import './EthearnalRepTokenCrowdsale.sol';
 import './EthearnalRepToken.sol';
 import './VotingProxy.sol';
-import 'zeppelin-solidity/contracts/math/SafeMath.sol';
+import 'math/SafeMath.sol';
 
 contract Treasury is MultiOwnable {
     using SafeMath for uint256;
@@ -63,44 +54,31 @@ contract Treasury is MultiOwnable {
     }
 
     // TESTED
-    // BK OK - Only owner can execute, once
     function setCrowdsaleContract(address _address) public onlyOwner {
         // Could be set only once
-        // BK Ok
         require(crowdsaleContract == address(0x0));
-        // BK Ok
         require(_address != 0x0);
-        // BK Ok
         crowdsaleContract = EthearnalRepTokenCrowdsale(_address); 
     }
 
-    // BK OK - Only owner can execute, once
     function setTokenContract(address _address) public onlyOwner {
         // Could be set only once
-        // BK Ok
         require(tokenContract == address(0x0));
-        // BK Ok
         require(_address != 0x0);
-        // BK Ok
         tokenContract = EthearnalRepToken(_address);
     }
 
     // TESTED
-    // BK OK - Only crowdsale contract can execute, once
     function setCrowdsaleFinished() public {
-        // BK Ok
         require(crowdsaleContract != address(0x0));
-        // BK Ok
         require(msg.sender == address(crowdsaleContract));
         withdrawChunk = getWeiRaised().div(10);
         weiUnlocked = withdrawChunk;
-        // BK OK
         isCrowdsaleFinished = true;
     }
 
     // TESTED
     function withdrawTeamFunds() public onlyOwner {
-        // BK OK
         require(isCrowdsaleFinished);
         require(weiUnlocked > weiWithdrawed);
         uint256 toWithdraw = weiUnlocked.sub(weiWithdrawed);
@@ -114,7 +92,6 @@ contract Treasury is MultiOwnable {
     }
 
     function increaseWithdrawalChunk() {
-        // BK OK
         require(isCrowdsaleFinished);
         require(msg.sender == address(votingProxyContract));
         weiUnlocked = weiUnlocked.add(withdrawChunk);
@@ -158,5 +135,3 @@ contract Treasury is MultiOwnable {
         return ( _quotient);
     }
 }
-
-```

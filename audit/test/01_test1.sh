@@ -30,10 +30,10 @@ TEST1RESULTS=`grep ^TEST1RESULTS= settings.txt | sed "s/^.*=//"`
 CURRENTTIME=`date +%s`
 CURRENTTIMES=`date -r $CURRENTTIME -u`
 
-DATE_PRESALE_START=`echo "$CURRENTTIME+75" | bc`
-DATE_PRESALE_START_S=`date -r $DATE_PRESALE_START -u`
-DATE_PRESALE_END=`echo "$CURRENTTIME+90" | bc`
-DATE_PRESALE_END_S=`date -r $DATE_PRESALE_END -u`
+START_DATE=`echo "$CURRENTTIME+75" | bc`
+START_DATE_S=`date -r $START_DATE -u`
+END_DATE=`echo "$CURRENTTIME+90" | bc`
+END_DATE_S=`date -r $END_DATE -u`
 
 printf "MODE               = '$MODE'\n" | tee $TEST1OUTPUT
 printf "GETHATTACHPOINT    = '$GETHATTACHPOINT'\n" | tee -a $TEST1OUTPUT
@@ -52,8 +52,8 @@ printf "INCLUDEJS          = '$INCLUDEJS'\n" | tee -a $TEST1OUTPUT
 printf "TEST1OUTPUT        = '$TEST1OUTPUT'\n" | tee -a $TEST1OUTPUT
 printf "TEST1RESULTS       = '$TEST1RESULTS'\n" | tee -a $TEST1OUTPUT
 printf "CURRENTTIME        = '$CURRENTTIME' '$CURRENTTIMES'\n" | tee -a $TEST1OUTPUT
-printf "DATE_PRESALE_START = '$DATE_PRESALE_START' '$DATE_PRESALE_START_S'\n" | tee -a $TEST1OUTPUT
-printf "DATE_PRESALE_END   = '$DATE_PRESALE_END' '$DATE_PRESALE_END_S'\n" | tee -a $TEST1OUTPUT
+printf "START_DATE         = '$START_DATE' '$START_DATE_S'\n" | tee -a $TEST1OUTPUT
+printf "END_DATE           = '$END_DATE' '$END_DATE_S'\n" | tee -a $TEST1OUTPUT
 
 # Make copy of SOL file and modify start and end times ---
 # `cp modifiedContracts/SnipCoin.sol .`
@@ -62,9 +62,10 @@ printf "DATE_PRESALE_END   = '$DATE_PRESALE_END' '$DATE_PRESALE_END_S'\n" | tee 
 
 # --- Modify parameters ---
 `perl -pi -e "s/zeppelin-solidity\/contracts\///" *.sol`
-`perl -pi -e "s/DATE_PRESALE_START \= 1512050400;.*$/DATE_PRESALE_START \= $DATE_PRESALE_START; \/\/ $DATE_PRESALE_START_S/" $CROWDSALESOL`
-`perl -pi -e "s/DATE_PRESALE_END   \= 1513260000;.*$/DATE_PRESALE_END   \= $DATE_PRESALE_END; \/\/ $DATE_PRESALE_END_S/" $CROWDSALESOL`
+`perl -pi -e "s/saleStartDate \= 1510416000;.*$/saleStartDate \= $START_DATE; \/\/ $START_DATE_S/" $CROWDSALESOL`
+`perl -pi -e "s/saleEndDate \= 1513008000;.*$/saleEndDate \= $END_DATE; \/\/ $END_DATE_S/" $CROWDSALESOL`
 `perl -pi -e "s/getOwners\(\) public returns/getOwners\(\) public constant returns/" $TREASURYSOL`
+`perl -pi -e "s/uint256 etherRateUsd/uint256 public etherRateUsd/" $CROWDSALESOL`
 
 for FILE in Ballot.sol EthearnalRepTokenCrowdsale.sol LockableToken.sol MultiOwnable.sol Treasury.sol EthearnalRepToken.sol IBallot.sol RefundInvestorsBallot.sol VotingProxy.sol
 do
@@ -151,7 +152,7 @@ var treasuryContract = web3.eth.contract(treasuryAbi);
 // console.log(JSON.stringify(treasuryContract));
 var treasuryTx = null;
 var treasuryAddress = null;
-var treasury = treasuryContract.new(wallet, {from: contractOwnerAccount, data: treasuryBin, gas: 6000000, gasPrice: defaultGasPrice},
+var treasury = treasuryContract.new(teamWallet, {from: contractOwnerAccount, data: treasuryBin, gas: 6000000, gasPrice: defaultGasPrice},
   function(e, contract) {
     if (!e) {
       if (!contract.address) {
@@ -206,21 +207,23 @@ console.log("RESULT: ");
 
 
 // -----------------------------------------------------------------------------
-var setupTreasuryMessage = "Setup Treasury";
+var setupTreasury1_Message = "Setup Treasury #1";
 // -----------------------------------------------------------------------------
-console.log("RESULT: --- " + setupTreasuryMessage + " ---");
-var setupTreasury1Tx = treasury.setupOwners([owner1, owner2], {from: contractOwnerAccount, gas: 400000, gasPrice: defaultGasPrice});
-var setupTreasury2Tx = treasury.setTokenContract(tokenAddress, {from: contractOwnerAccount, gas: 400000, gasPrice: defaultGasPrice});
-var setupTreasury3Tx = treasury.setVotingProxy(votingProxyAddress, {from: contractOwnerAccount, gas: 400000, gasPrice: defaultGasPrice});
+console.log("RESULT: --- " + setupTreasury1_Message + " ---");
+var setupTreasury1_1Tx = treasury.setupOwners([owner1, owner2], {from: contractOwnerAccount, gas: 400000, gasPrice: defaultGasPrice});
+while (txpool.status.pending > 0) {
+}
+var setupTreasury1_2Tx = treasury.setTokenContract(tokenAddress, {from: owner1, gas: 400000, gasPrice: defaultGasPrice});
+var setupTreasury1_3Tx = treasury.setVotingProxy(votingProxyAddress, {from: owner2, gas: 400000, gasPrice: defaultGasPrice});
 while (txpool.status.pending > 0) {
 }
 printBalances();
-failIfTxStatusError(setupTreasury1Tx, setupTreasuryMessage + " - treasury.setupOwners([owner1, owner2])");
-failIfTxStatusError(setupTreasury2Tx, setupTreasuryMessage + " - treasury.setTokenContract(token)");
-failIfTxStatusError(setupTreasury3Tx, setupTreasuryMessage + " - treasury.setVotingProxy(votingProxy)");
-printTxData("setupTreasury1Tx", setupTreasury1Tx);
-printTxData("setupTreasury2Tx", setupTreasury2Tx);
-printTxData("setupTreasury3Tx", setupTreasury3Tx);
+failIfTxStatusError(setupTreasury1_1Tx, setupTreasury1_Message + " - treasury.setupOwners([owner1, owner2])");
+failIfTxStatusError(setupTreasury1_2Tx, setupTreasury1_Message + " - treasury.setTokenContract(token)");
+failIfTxStatusError(setupTreasury1_3Tx, setupTreasury1_Message + " - treasury.setVotingProxy(votingProxy)");
+printTxData("setupTreasury1_1Tx", setupTreasury1_1Tx);
+printTxData("setupTreasury1_2Tx", setupTreasury1_2Tx);
+printTxData("setupTreasury1_3Tx", setupTreasury1_3Tx);
 printTreasuryContractDetails();
 console.log("RESULT: ");
 
@@ -241,7 +244,7 @@ var crowdsale = crowdsaleContract.new([owner1, owner2], treasuryAddress, teamWal
       } else {
         crowdsaleAddress = contract.address;
         addAccount(crowdsaleAddress, "Crowdsale");
-        addTreasuryContractAddressAndAbi(crowdsaleAddress, crowdsaleAbi);
+        addCrowdsaleContractAddressAndAbi(crowdsaleAddress, crowdsaleAbi);
         console.log("DATA: crowdsaleAddress=" + crowdsaleAddress);
       }
     }
@@ -252,6 +255,20 @@ while (txpool.status.pending > 0) {
 printBalances();
 failIfTxStatusError(crowdsaleTx, crowdsaleMessage);
 printTxData("crowdsaleAddress=" + crowdsaleAddress, crowdsaleTx);
+printCrowdsaleContractDetails();
+console.log("RESULT: ");
+
+
+// -----------------------------------------------------------------------------
+var setupTreasury2_Message = "Setup Treasury #2";
+// -----------------------------------------------------------------------------
+console.log("RESULT: --- " + setupTreasury2_Message + " ---");
+var setupTreasury2_1Tx = treasury.setCrowdsaleContract(crowdsaleAddress, {from: owner1, gas: 400000, gasPrice: defaultGasPrice});
+while (txpool.status.pending > 0) {
+}
+printBalances();
+failIfTxStatusError(setupTreasury2_1Tx, setupTreasury2_Message + " - treasury.setCrowdsaleContract(crowdsaleAddress)");
+printTxData("setupTreasury2_1Tx", setupTreasury2_1Tx);
 printTreasuryContractDetails();
 console.log("RESULT: ");
 

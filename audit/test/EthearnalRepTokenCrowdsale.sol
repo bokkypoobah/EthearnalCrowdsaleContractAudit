@@ -17,16 +17,16 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
 
     // Ethereum rate, how much USD does 1 ether cost
     // The actual value is set by setEtherRateUsd
-    uint256 etherRateUsd = 300;
+    uint256 public etherRateUsd = 300;
 
     // Token price in Ether, 1 token is 0.5 USD, 3 decimals
     uint256 public tokenRateUsd = (1 * 1000) / uint256(2);
 
     // Mainsale Start Date (11 Nov 16:00 UTC)
-    uint256 public constant saleStartDate = 1510416000;
+    uint256 public constant saleStartDate = 1513151486; // Wed 13 Dec 2017 07:51:26 UTC
 
     // Mainsale End Date (11 Dec 16:00 UTC)
-    uint256 public constant saleEndDate = 1513008000;
+    uint256 public constant saleEndDate = 1513151501; // Wed 13 Dec 2017 07:51:41 UTC
 
     // How many tokens generate for the team, ratio with 3 decimals digits
     uint256 public constant teamTokenRatio = uint256(1 * 1000) / 3;

@@ -10,8 +10,8 @@ var accountNames = {};
 
 addAccount(eth.accounts[0], "Account #0 - Miner");
 addAccount(eth.accounts[1], "Account #1 - Contract Owner");
-addAccount(eth.accounts[2], "Account #2 - Wallet");
-addAccount(eth.accounts[3], "Account #3");
+addAccount(eth.accounts[2], "Account #2 - Whitelisted");
+addAccount(eth.accounts[3], "Account #3 - Whitelisted");
 addAccount(eth.accounts[4], "Account #4");
 addAccount(eth.accounts[5], "Account #5");
 addAccount(eth.accounts[6], "Account #6");
@@ -25,7 +25,7 @@ addAccount(eth.accounts[12], "Account #12 - Team Wallet");
 
 var minerAccount = eth.accounts[0];
 var contractOwnerAccount = eth.accounts[1];
-var wallet = eth.accounts[2];
+var account2 = eth.accounts[2];
 var account3 = eth.accounts[3];
 var account4 = eth.accounts[4];
 var account5 = eth.accounts[5];
@@ -324,7 +324,7 @@ function printTreasuryContractDetails() {
   console.log("RESULT: treasuryContractAddress=" + treasuryContractAddress);
   if (treasuryContractAddress != null && treasuryContractAbi != null) {
     var contract = eth.contract(treasuryContractAbi).at(treasuryContractAddress);
-    console.log("RESULT: treasury.getOwners=" + contract.getOwners());
+    // console.log("RESULT: treasury.getOwners()=" + JSON.stringify(contract.getOwners()));
     console.log("RESULT: treasury.weiWithdrawed=" + contract.weiWithdrawed() + " " + contract.weiWithdrawed().shift(-18) + " ETH");
     console.log("RESULT: treasury.weiUnlocked=" + contract.weiUnlocked() + " " + contract.weiUnlocked().shift(-18) + " ETH");
     console.log("RESULT: treasury.isCrowdsaleFinished=" + contract.isCrowdsaleFinished());
@@ -380,54 +380,15 @@ function addVotingProxyContractAddressAndAbi(address, abi) {
   votingProxyContractAddress = address;
   votingProxyContractAbi = abi;
 }
-var votingProxyFromBlock = 0;
 function printVotingProxyContractDetails() {
   console.log("RESULT: votingProxyContractAddress=" + votingProxyContractAddress);
   if (votingProxyContractAddress != null && votingProxyContractAbi != null) {
     var contract = eth.contract(votingProxyContractAbi).at(votingProxyContractAddress);
-    console.log("RESULT: votingProxy.getOwners=" + contract.getOwners());
-    console.log("RESULT: votingProxy.weiWithdrawed=" + contract.weiWithdrawed() + " " + contract.weiWithdrawed().shift(-18) + " ETH");
-    console.log("RESULT: votingProxy.weiUnlocked=" + contract.weiUnlocked() + " " + contract.weiUnlocked().shift(-18) + " ETH");
-    console.log("RESULT: votingProxy.isCrowdsaleFinished=" + contract.isCrowdsaleFinished());
-    // console.log("RESULT: votingProxy.teamWallet=" + contract.teamWallet());
-    console.log("RESULT: votingProxy.crowdsaleContract=" + contract.crowdsaleContract());
+    console.log("RESULT: votingProxy.owner=" + contract.owner());
+    console.log("RESULT: votingProxy.treasuryContract=" + contract.treasuryContract());
     console.log("RESULT: votingProxy.tokenContract=" + contract.tokenContract());
-    console.log("RESULT: votingProxy.isRefundsEnabled=" + contract.isRefundsEnabled());
-    console.log("RESULT: votingProxy.withdrawChunk=" + contract.withdrawChunk() + " " + contract.withdrawChunk().shift(-18) + " ETH");
-    console.log("RESULT: votingProxy.votingProxyContract=" + contract.votingProxyContract());
-
-    var latestBlock = eth.blockNumber;
-    var i;
-
-    var depositEvents = contract.Deposit({}, { fromBlock: votingProxyFromBlock, toBlock: latestBlock });
-    i = 0;
-    depositEvents.watch(function (error, result) {
-      console.log("RESULT: Deposit " + i++ + " #" + result.blockNumber + " " + JSON.stringify(result.args));
-    });
-    depositEvents.stopWatching();
-
-    var withdrawEvents = contract.Withdraw({}, { fromBlock: votingProxyFromBlock, toBlock: latestBlock });
-    i = 0;
-    withdrawEvents.watch(function (error, result) {
-      console.log("RESULT: Withdraw " + i++ + " #" + result.blockNumber + " " + JSON.stringify(result.args));
-    });
-    withdrawEvents.stopWatching();
-
-    var unlockWeiEvents = contract.UnlockWei({}, { fromBlock: votingProxyFromBlock, toBlock: latestBlock });
-    i = 0;
-    unlockWeiEvents.watch(function (error, result) {
-      console.log("RESULT: UnlockWei " + i++ + " #" + result.blockNumber + " " + JSON.stringify(result.args));
-    });
-    unlockWeiEvents.stopWatching();
-
-    var refundedInvestorEvents = contract.RefundedInvestor({}, { fromBlock: votingProxyFromBlock, toBlock: latestBlock });
-    i = 0;
-    refundedInvestorEvents.watch(function (error, result) {
-      console.log("RESULT: RefundedInvestor " + i++ + " #" + result.blockNumber + " " + JSON.stringify(result.args));
-    });
-    refundedInvestorEvents.stopWatching();
-
-    votingProxyFromBlock = latestBlock + 1;
+    console.log("RESULT: votingProxy.currentIncreaseWithdrawalTeamBallot=" + contract.currentIncreaseWithdrawalTeamBallot());
+    console.log("RESULT: votingProxy.currentRefundInvestorsBallot=" + contract.currentRefundInvestorsBallot());
   }
 }
 
@@ -446,48 +407,37 @@ function printCrowdsaleContractDetails() {
   console.log("RESULT: crowdsaleContractAddress=" + crowdsaleContractAddress);
   if (crowdsaleContractAddress != null && crowdsaleContractAbi != null) {
     var contract = eth.contract(crowdsaleContractAbi).at(crowdsaleContractAddress);
-    console.log("RESULT: crowdsale.getOwners=" + contract.getOwners());
-    console.log("RESULT: crowdsale.weiWithdrawed=" + contract.weiWithdrawed() + " " + contract.weiWithdrawed().shift(-18) + " ETH");
-    console.log("RESULT: crowdsale.weiUnlocked=" + contract.weiUnlocked() + " " + contract.weiUnlocked().shift(-18) + " ETH");
-    console.log("RESULT: crowdsale.isCrowdsaleFinished=" + contract.isCrowdsaleFinished());
-    // console.log("RESULT: crowdsale.teamWallet=" + contract.teamWallet());
-    console.log("RESULT: crowdsale.crowdsaleContract=" + contract.crowdsaleContract());
-    console.log("RESULT: crowdsale.tokenContract=" + contract.tokenContract());
-    console.log("RESULT: crowdsale.isRefundsEnabled=" + contract.isRefundsEnabled());
-    console.log("RESULT: crowdsale.withdrawChunk=" + contract.withdrawChunk() + " " + contract.withdrawChunk().shift(-18) + " ETH");
-    console.log("RESULT: crowdsale.votingProxyContract=" + contract.votingProxyContract());
+    // console.log("RESULT: crowdsale.getOwners=" + contract.getOwners());
+    console.log("RESULT: crowdsale.token=" + contract.token());
+    console.log("RESULT: crowdsale.tokenRateUsd=" + contract.tokenRateUsd() + " " + contract.tokenRateUsd().shift(-3) + " USD");
+    console.log("RESULT: crowdsale.saleStartDate=" + contract.saleStartDate() + " " + new Date(contract.saleStartDate() * 1000).toUTCString());
+    console.log("RESULT: crowdsale.saleEndDate=" + contract.saleEndDate() + " " + new Date(contract.saleEndDate() * 1000).toUTCString());
+    console.log("RESULT: crowdsale.teamTokenRatio=" + contract.teamTokenRatio() + " " + contract.teamTokenRatio().shift(-3));
+    console.log("RESULT: crowdsale.saleCapUsd=" + contract.saleCapUsd());
+    console.log("RESULT: crowdsale.weiRaised=" + contract.weiRaised() + " " + contract.weiRaised().shift(-18) + " ETH");
+    console.log("RESULT: crowdsale.isFinalized=" + contract.isFinalized());
+    console.log("RESULT: crowdsale.teamTokenWallet=" + contract.teamTokenWallet());
+    console.log("RESULT: crowdsale.whitelistedInvestorCounter=" + contract.whitelistedInvestorCounter());
+    console.log("RESULT: crowdsale.hourLimitByAddressUsd=" + contract.hourLimitByAddressUsd());
+    console.log("RESULT: crowdsale.treasuryContract=" + contract.treasuryContract());
 
     var latestBlock = eth.blockNumber;
     var i;
 
-    var depositEvents = contract.Deposit({}, { fromBlock: crowdsaleFromBlock, toBlock: latestBlock });
+    var changeReturnEvents = contract.ChangeReturn({}, { fromBlock: crowdsaleFromBlock, toBlock: latestBlock });
     i = 0;
-    depositEvents.watch(function (error, result) {
-      console.log("RESULT: Deposit " + i++ + " #" + result.blockNumber + " " + JSON.stringify(result.args));
+    changeReturnEvents.watch(function (error, result) {
+      console.log("RESULT: ChangeReturn " + i++ + " #" + result.blockNumber + " " + JSON.stringify(result.args));
     });
-    depositEvents.stopWatching();
+    changeReturnEvents.stopWatching();
 
-    var withdrawEvents = contract.Withdraw({}, { fromBlock: crowdsaleFromBlock, toBlock: latestBlock });
+    var tokenPurchaseEvents = contract.TokenPurchase({}, { fromBlock: crowdsaleFromBlock, toBlock: latestBlock });
     i = 0;
-    withdrawEvents.watch(function (error, result) {
-      console.log("RESULT: Withdraw " + i++ + " #" + result.blockNumber + " " + JSON.stringify(result.args));
+    tokenPurchaseEvents.watch(function (error, result) {
+      console.log("RESULT: TokenPurchase " + i++ + " #" + result.blockNumber + " " + JSON.stringify(result.args));
     });
-    withdrawEvents.stopWatching();
+    tokenPurchaseEvents.stopWatching();
 
-    var unlockWeiEvents = contract.UnlockWei({}, { fromBlock: crowdsaleFromBlock, toBlock: latestBlock });
-    i = 0;
-    unlockWeiEvents.watch(function (error, result) {
-      console.log("RESULT: UnlockWei " + i++ + " #" + result.blockNumber + " " + JSON.stringify(result.args));
-    });
-    unlockWeiEvents.stopWatching();
-
-    var refundedInvestorEvents = contract.RefundedInvestor({}, { fromBlock: crowdsaleFromBlock, toBlock: latestBlock });
-    i = 0;
-    refundedInvestorEvents.watch(function (error, result) {
-      console.log("RESULT: RefundedInvestor " + i++ + " #" + result.blockNumber + " " + JSON.stringify(result.args));
-    });
-    refundedInvestorEvents.stopWatching();
-
-    crowdsaleFromBlock = latestBlock + 1;
+   crowdsaleFromBlock = latestBlock + 1;
   }
 }

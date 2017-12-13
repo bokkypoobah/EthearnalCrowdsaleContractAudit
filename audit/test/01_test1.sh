@@ -260,17 +260,55 @@ console.log("RESULT: ");
 
 
 // -----------------------------------------------------------------------------
-var setupTreasury2_Message = "Setup Treasury #2";
+var setup2_Message = "Setup #2";
 // -----------------------------------------------------------------------------
-console.log("RESULT: --- " + setupTreasury2_Message + " ---");
-var setupTreasury2_1Tx = treasury.setCrowdsaleContract(crowdsaleAddress, {from: owner1, gas: 400000, gasPrice: defaultGasPrice});
+console.log("RESULT: --- " + setup2_Message + " ---");
+var setup2_1Tx = treasury.setCrowdsaleContract(crowdsaleAddress, {from: owner1, gas: 400000, gasPrice: defaultGasPrice});
+var setup2_2Tx = token.transferOwnership(crowdsaleAddress, {from: contractOwnerAccount, gas: 400000, gasPrice: defaultGasPrice});
+while (txpool.status.pending > 0) {
+}
+var setup2_3Tx = crowdsale.setTokenContract(tokenAddress, {from: owner1, gas: 400000, gasPrice: defaultGasPrice});
 while (txpool.status.pending > 0) {
 }
 printBalances();
-failIfTxStatusError(setupTreasury2_1Tx, setupTreasury2_Message + " - treasury.setCrowdsaleContract(crowdsaleAddress)");
-printTxData("setupTreasury2_1Tx", setupTreasury2_1Tx);
+failIfTxStatusError(setup2_1Tx, setup2_Message + " - treasury.setCrowdsaleContract(crowdsale)");
+failIfTxStatusError(setup2_2Tx, setup2_Message + " - token.transferOwnership(crowdsale)");
+failIfTxStatusError(setup2_3Tx, setup2_Message + " - crowdsale.setTokenContract(token)");
+printTxData("setup2_1Tx", setup2_1Tx);
+printTxData("setup2_2Tx", setup2_2Tx);
+printTxData("setup2_3Tx", setup2_3Tx);
 printTreasuryContractDetails();
 console.log("RESULT: ");
+
+
+waitUntil("crowdsale.saleStartDate()", crowdsale.saleStartDate(), 0);
+
+
+// -----------------------------------------------------------------------------
+var sendContribution1Message = "Send Contribution #1";
+// -----------------------------------------------------------------------------
+console.log("RESULT: " + sendContribution1Message);
+var sendContribution1_1Tx = eth.sendTransaction({from: account3, to: tokenAddress, gas: 400000, value: web3.toWei("100", "ether")});
+var sendContribution1_2Tx = eth.sendTransaction({from: account4, to: tokenAddress, gas: 400000, value: web3.toWei("100", "ether")});
+var sendContribution1_3Tx = eth.sendTransaction({from: account5, to: tokenAddress, gas: 400000, value: web3.toWei("100", "ether")});
+var sendContribution1_4Tx = eth.sendTransaction({from: account6, to: tokenAddress, gas: 400000, value: web3.toWei("100.01", "ether")});
+while (txpool.status.pending > 0) {
+}
+printBalances();
+printTxData("sendContribution1_1Tx", sendContribution1_1Tx);
+printTxData("sendContribution1_2Tx", sendContribution1_2Tx);
+printTxData("sendContribution1_3Tx", sendContribution1_3Tx);
+printTxData("sendContribution1_4Tx", sendContribution1_4Tx);
+failIfTxStatusError(sendContribution1_1Tx, sendContribution1Message + " - ac3 100 ETH");
+failIfTxStatusError(sendContribution1_2Tx, sendContribution1Message + " - ac4 100 ETH");
+failIfTxStatusError(sendContribution1_3Tx, sendContribution1Message + " - ac5 100 ETH");
+failIfTxStatusError(sendContribution1_4Tx, sendContribution1Message + " - ac5 100 ETH");
+printCrowdsaleContractDetails();
+printTreasuryContractDetails();
+printTokenContractDetails();
+console.log("RESULT: ");
+
+
 
 
 exit;

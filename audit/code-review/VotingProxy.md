@@ -7,8 +7,10 @@ Source file [../../contracts/VotingProxy.sol](../../contracts/VotingProxy.sol).
 <hr />
 
 ```javascript
+// BK Ok
 pragma solidity ^0.4.15;
 
+// BK Next 6 Ok
 import './Treasury.sol';
 import './Ballot.sol';
 import './RefundInvestorsBallot.sol';
@@ -16,11 +18,17 @@ import "./EthearnalRepToken.sol";
 import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
 import 'zeppelin-solidity/contracts/math/SafeMath.sol';
 
+// BK Ok
 contract VotingProxy is Ownable {
-    using SafeMath for uint256;    
+    // BK Ok
+    using SafeMath for uint256;
+    // BK Ok    
     Treasury public treasuryContract;
+    // BK Ok
     EthearnalRepToken public tokenContract;
+    // BK Ok
     Ballot public currentIncreaseWithdrawalTeamBallot;
+    // BK Ok
     RefundInvestorsBallot public currentRefundInvestorsBallot;
 
     function  VotingProxy(address _treasuryContract, address _tokenContract) {

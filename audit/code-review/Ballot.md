@@ -7,16 +7,21 @@ Source file [../../contracts/Ballot.sol](../../contracts/Ballot.sol).
 <hr />
 
 ```javascript
+// BK Ok
 pragma solidity ^0.4.15;
 
+// BK Next 3 Ok
 import "./EthearnalRepToken.sol";
 import "./VotingProxy.sol";
 import "./IBallot.sol";
 
+// BK Ok
 contract Ballot is IBallot {
 
+    // BK Ok
     uint256 public initialQuorumPercent = 51;
 
+    // BK Ok - Constructor
     function Ballot(address _tokenContract) {
         tokenContract = EthearnalRepToken(_tokenContract);
         proxyVotingContract = VotingProxy(msg.sender);

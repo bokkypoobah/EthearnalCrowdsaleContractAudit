@@ -23,10 +23,10 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
     uint256 public tokenRateUsd = (1 * 1000) / uint256(2);
 
     // Mainsale Start Date (11 Nov 16:00 UTC)
-    uint256 public constant saleStartDate = 1513171423; // Wed 13 Dec 2017 13:23:43 UTC
+    uint256 public constant saleStartDate = 1513184400; // Wed 13 Dec 2017 17:00:00 UTC
 
     // Mainsale End Date (11 Dec 16:00 UTC)
-    uint256 public constant saleEndDate = 1513171438; // Wed 13 Dec 2017 13:23:58 UTC
+    uint256 public constant saleEndDate = 1513184415; // Wed 13 Dec 2017 17:00:15 UTC
 
     // How many tokens generate for the team, ratio with 3 decimals digits
     uint256 public constant teamTokenRatio = uint256(1 * 1000) / 3;
@@ -62,7 +62,7 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
 
 
     // Extra money each address can spend each hour
-    uint256 hourLimitByAddressUsd = 1000;
+    uint256 public hourLimitByAddressUsd = 1000;
 
     // Wallet to store all raised money
     Treasury public treasuryContract = Treasury(0x0);
@@ -133,8 +133,8 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
             (state == State.MainSale) &&
             (weiToBuy > 0)
         );
-        weiToBuy = min(weiToBuy, getWeiAllowedFromAddress(recipient));
-        require(weiToBuy > 0);
+        // weiToBuy = min(weiToBuy, getWeiAllowedFromAddress(recipient));
+        // require(weiToBuy > 0);
         weiToBuy = min(weiToBuy, convertUsdToEther(saleCapUsd).sub(weiRaised));
         require(weiToBuy > 0);
         uint256 tokenAmount = getTokenAmountForEther(weiToBuy);
@@ -222,7 +222,7 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
     }
 
     // TESTED
-    function getCurrentState() internal returns (State) {
+    function getCurrentState() public returns (State) {
         return getStateForTime(getTime());
     }
 

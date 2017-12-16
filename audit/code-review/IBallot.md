@@ -44,6 +44,7 @@ contract IBallot {
     // BK Ok
     uint256 public initialQuorumPercent = 51;
 
+    // BK Ok
     VotingProxy public proxyVotingContract;
 
     // Tells if voting process is active
@@ -53,22 +54,33 @@ contract IBallot {
     // BK Ok - Event
     event FinishBallot(uint256 _time);
     
+    // BK Ok
     modifier onlyWhenBallotStarted {
+        // BK Ok
         require(ballotStarted != 0);
+        // BK Ok
         _;
     }
 
+    // BK Ok - Anyone can vote, but processVote(...) will weight by the account's token balance. No tokens = 0 weight
     function vote(bytes _vote) public onlyWhenBallotStarted {
+        // BK Ok
         require(_vote.length > 0);
+        // BK Ok
         if (isDataYes(_vote)) {
+            // BK Ok
             processVote(true);
+        // BK Ok
         } else if (isDataNo(_vote)) {
+            // BK Ok
             processVote(false);
         }
     }
 
+    // BK Ok - Constant function
     function isDataYes(bytes data) public constant returns (bool) {
         // compare data with "YES" string
+        // BK Ok - web3.toAscii("0x597945655373") => "YyEeSs"
         return (
             data.length == 3 &&
             (data[0] == 0x59 || data[0] == 0x79) &&
@@ -78,8 +90,10 @@ contract IBallot {
     }
 
     // TESTED
+    // BK Ok - Constant function
     function isDataNo(bytes data) public constant returns (bool) {
         // compare data with "NO" string
+        // BK Ok - web3.toAscii("0x4e6e4f6f") => "NnOo"
         return (
             data.length == 2 &&
             (data[0] == 0x4e || data[0] == 0x6e) &&
@@ -87,6 +101,7 @@ contract IBallot {
         );
     }
     
+    // BK Ok - Anyone can vote, but votes are weighted by the account's token balance. No tokens = 0 weight
     function processVote(bool isYes) internal {
         // BK Ok
         require(isVotingActive);
@@ -96,23 +111,33 @@ contract IBallot {
         votersLength = votersLength.add(1);
         // BK Ok
         uint256 voteWeight = tokenContract.balanceOf(msg.sender);
+        // BK Ok
         if (isYes) {
             // BK Ok
             yesVoteSum = yesVoteSum.add(voteWeight);
+        // BK Ok
         } else {
             // BK Ok
             noVoteSum = noVoteSum.add(voteWeight);
         }
+        // BK Ok
         require(getTime().sub(tokenContract.lastMovement(msg.sender)) > 7 days);
+        // BK Ok
         uint256 quorumPercent = getQuorumPercent();
+        // BK Ok
         if (quorumPercent == 0) {
+            // BK Ok
             isVotingActive = false;
+        // BK Ok
         } else {
+            // BK Ok
             decide();
         }
+        // BK Ok
         votesByAddress[msg.sender] = true;
     }
 
+    // BK Ok
     function decide() internal {
         // BK Ok
         uint256 quorumPercent = getQuorumPercent();
@@ -141,12 +166,15 @@ contract IBallot {
         
     }
 
+    // BK Ok - Matches implementation
     function getQuorumPercent() public constant returns (uint256);
 
+    // BK Ok - internal function
     function getTime() internal returns (uint256) {
         // Just returns `now` value
         // This function is redefined in EthearnalRepTokenCrowdsaleMock contract
         // to allow testing contract behaviour at different time moments
+        // BK Ok
         return now;
     }
     

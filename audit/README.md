@@ -41,10 +41,11 @@ Commits
 
 ### Original Source Files
 
-* [ ] [code-review/IBallot.md](code-review/IBallot.md)
-  * [ ] contract IBallot
+* [x] [code-review/IBallot.md](code-review/IBallot.md)
+  * [x] contract IBallot
 * [ ] [code-review/Ballot.md](code-review/Ballot.md)
   * [ ] contract Ballot is IBallot
+    * [ ] Issue - `Ballot.initialQuorumPercent` shadows `IBallot.initialQuorumPercent`
 * [x] [code-review/EthearnalRepToken.md](code-review/EthearnalRepToken.md)
   * [x] contract EthearnalRepToken is MintableToken, LockableToken
 * [ ] [code-review/EthearnalRepTokenCrowdsale.md](code-review/EthearnalRepTokenCrowdsale.md)

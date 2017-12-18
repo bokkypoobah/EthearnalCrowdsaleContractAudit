@@ -409,6 +409,7 @@ function printCrowdsaleContractDetails() {
     var contract = eth.contract(crowdsaleContractAbi).at(crowdsaleContractAddress);
     // console.log("RESULT: crowdsale.getOwners=" + contract.getOwners());
     console.log("RESULT: crowdsale.token=" + contract.token());
+    console.log("RESULT: crowdsale.etherRateUsd=" + contract.etherRateUsd());
     console.log("RESULT: crowdsale.tokenRateUsd=" + contract.tokenRateUsd() + " " + contract.tokenRateUsd().shift(-3) + " USD");
     console.log("RESULT: crowdsale.saleStartDate=" + contract.saleStartDate() + " " + new Date(contract.saleStartDate() * 1000).toUTCString());
     console.log("RESULT: crowdsale.saleEndDate=" + contract.saleEndDate() + " " + new Date(contract.saleEndDate() * 1000).toUTCString());

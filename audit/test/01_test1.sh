@@ -32,7 +32,7 @@ CURRENTTIMES=`date -r $CURRENTTIME -u`
 
 START_DATE=`echo "$CURRENTTIME+75" | bc`
 START_DATE_S=`date -r $START_DATE -u`
-END_DATE=`echo "$CURRENTTIME+90" | bc`
+END_DATE=`echo "$CURRENTTIME+120" | bc`
 END_DATE_S=`date -r $END_DATE -u`
 
 printf "MODE               = '$MODE'\n" | tee $TEST1OUTPUT

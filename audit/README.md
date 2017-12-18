@@ -31,7 +31,10 @@ Commits
 * **MEDIUM IMPORTANCE** The variable `IBallot.initialQuorumPercent` is shadowed by `Ballot.initialQuorumPercent`. See
   [Oracles PoA Network Consensus Contracts Audit - Recommendation](https://github.com/bokkypoobah/OraclesPoANetworkConsensusContractsAudit/tree/master/audit#recommendations)
   for a similar issue and [Oracles PoA Network Consensus Contracts Audit - Example To Demonstrate The Shadowing Of Variables](https://github.com/bokkypoobah/OraclesPoANetworkConsensusContractsAudit/tree/master/audit#example-to-demonstrate-the-shadowing-of-variables)
-  for an example.
+  for an example. Same with `RefundInvestorsBallot.initialQuorumPercent`
+* **MEDIUM IMPORTANCE** The percentage of refund an investor can withdraw in *Treasury* depends on the ETH balance of the
+  *Treasury* contract at the time of withdrawal. The first refund withdrawal will get the highest percentage refund and
+  the last withdrawal will get the lowest percentage refund
 
 <br />
 
@@ -58,8 +61,8 @@ Commits
   * [ ] contract RefundInvestorsBallot is IBallot
 * [x] [code-review/Treasury.md](code-review/Treasury.md)
   * [x] contract Treasury is MultiOwnable
-* [ ] [code-review/VotingProxy.md](code-review/VotingProxy.md)
-  * [ ] contract VotingProxy is Ownable
+* [x] [code-review/VotingProxy.md](code-review/VotingProxy.md)
+  * [x] contract VotingProxy is Ownable
 
 <br />
 

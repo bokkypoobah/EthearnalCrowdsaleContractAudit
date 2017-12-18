@@ -62,7 +62,7 @@ contract LockableToken is StandardToken, Ownable {
         super.approve(_spender, _value);
     }
 
-    // BK Ok
+    // BK Ok - Only approve(...)-d account can burn another account's tokens
     function burnFrom(address _from, uint256 _value) public  returns (bool) {
         // BK Ok
         require(_value <= balances[_from]);

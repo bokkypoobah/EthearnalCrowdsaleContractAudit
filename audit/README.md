@@ -56,8 +56,8 @@ Commits
   * [ ] contract MultiOwnable
 * [ ] [code-review/RefundInvestorsBallot.md](code-review/RefundInvestorsBallot.md)
   * [ ] contract RefundInvestorsBallot is IBallot
-* [ ] [code-review/Treasury.md](code-review/Treasury.md)
-  * [ ] contract Treasury is MultiOwnable
+* [x] [code-review/Treasury.md](code-review/Treasury.md)
+  * [x] contract Treasury is MultiOwnable
 * [ ] [code-review/VotingProxy.md](code-review/VotingProxy.md)
   * [ ] contract VotingProxy is Ownable
 

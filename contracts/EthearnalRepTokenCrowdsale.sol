@@ -133,8 +133,8 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
             (state == State.MainSale) &&
             (weiToBuy > 0)
         );
-        // weiToBuy = min(weiToBuy, getWeiAllowedFromAddress(recipient));
-        // require(weiToBuy > 0);
+        weiToBuy = min(weiToBuy, getWeiAllowedFromAddress(recipient));
+        require(weiToBuy > 0);
         weiToBuy = min(weiToBuy, convertUsdToEther(saleCapUsd).sub(weiRaised));
         require(weiToBuy > 0);
         uint256 tokenAmount = getTokenAmountForEther(weiToBuy);

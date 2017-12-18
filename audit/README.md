@@ -36,6 +36,11 @@ Commits
   *Treasury* contract at the time of withdrawal. The first refund withdrawal will get the highest percentage refund and
   the last withdrawal will get the lowest percentage refund
 
+### TODO
+
+* Check `EthearnalRepTokenCrowdsale.getWeiAllowedFromAddress(...)`
+* Check percentage refunds
+
 <br />
 
 <hr />

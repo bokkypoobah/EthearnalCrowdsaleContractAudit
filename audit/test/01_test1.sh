@@ -68,6 +68,7 @@ printf "END_DATE           = '$END_DATE' '$END_DATE_S'\n" | tee -a $TEST1OUTPUT
 `perl -pi -e "s/uint256 etherRateUsd/uint256 public etherRateUsd/" $CROWDSALESOL`
 `perl -pi -e "s/uint256 hourLimitByAddressUsd/uint256 public hourLimitByAddressUsd/" $CROWDSALESOL`
 `perl -pi -e "s/getCurrentState\(\) internal returns/getCurrentState\(\) public returns/" $CROWDSALESOL`
+`perl -pi -e "s/weiToBuy \= min\(weiToBuy\, getWeiAllowedFromAddress\(recipient\)\);/\/\/ weiToBuy \= min\(weiToBuy\, getWeiAllowedFromAddress\(recipient\)\);/" $CROWDSALESOL`
 
 for FILE in Ballot.sol EthearnalRepTokenCrowdsale.sol LockableToken.sol MultiOwnable.sol Treasury.sol EthearnalRepToken.sol IBallot.sol RefundInvestorsBallot.sol VotingProxy.sol
 do
@@ -292,10 +293,10 @@ waitUntil("crowdsale.saleStartDate()", crowdsale.saleStartDate(), 0);
 var sendContribution1Message = "Send Contribution #1";
 // -----------------------------------------------------------------------------
 console.log("RESULT: " + sendContribution1Message);
-var sendContribution1_1Tx = eth.sendTransaction({from: account3, to: crowdsaleAddress, gas: 400000, value: web3.toWei("100", "ether")});
-var sendContribution1_2Tx = eth.sendTransaction({from: account4, to: crowdsaleAddress, gas: 400000, value: web3.toWei("100", "ether")});
-var sendContribution1_3Tx = eth.sendTransaction({from: account5, to: crowdsaleAddress, gas: 400000, value: web3.toWei("100", "ether")});
-var sendContribution1_4Tx = eth.sendTransaction({from: account6, to: crowdsaleAddress, gas: 400000, value: web3.toWei("100", "ether")});
+var sendContribution1_1Tx = eth.sendTransaction({from: account3, to: crowdsaleAddress, gas: 400000, value: web3.toWei("25000", "ether")});
+var sendContribution1_2Tx = eth.sendTransaction({from: account4, to: crowdsaleAddress, gas: 400000, value: web3.toWei("25000", "ether")});
+var sendContribution1_3Tx = eth.sendTransaction({from: account5, to: crowdsaleAddress, gas: 400000, value: web3.toWei("25000", "ether")});
+var sendContribution1_4Tx = eth.sendTransaction({from: account6, to: crowdsaleAddress, gas: 400000, value: web3.toWei("25001", "ether")});
 while (txpool.status.pending > 0) {
 }
 printBalances();
@@ -303,16 +304,47 @@ printTxData("sendContribution1_1Tx", sendContribution1_1Tx);
 printTxData("sendContribution1_2Tx", sendContribution1_2Tx);
 printTxData("sendContribution1_3Tx", sendContribution1_3Tx);
 printTxData("sendContribution1_4Tx", sendContribution1_4Tx);
-failIfTxStatusError(sendContribution1_1Tx, sendContribution1Message + " - ac3 100 ETH");
-failIfTxStatusError(sendContribution1_2Tx, sendContribution1Message + " - ac4 100 ETH");
-failIfTxStatusError(sendContribution1_3Tx, sendContribution1Message + " - ac5 100 ETH");
-failIfTxStatusError(sendContribution1_4Tx, sendContribution1Message + " - ac5 100 ETH");
+failIfTxStatusError(sendContribution1_1Tx, sendContribution1Message + " - ac3 25000 ETH");
+failIfTxStatusError(sendContribution1_2Tx, sendContribution1Message + " - ac4 25000 ETH");
+failIfTxStatusError(sendContribution1_3Tx, sendContribution1Message + " - ac5 25000 ETH");
+failIfTxStatusError(sendContribution1_4Tx, sendContribution1Message + " - ac5 25001 ETH");
 printCrowdsaleContractDetails();
 printTreasuryContractDetails();
 printTokenContractDetails();
 console.log("RESULT: ");
 
 
+// -----------------------------------------------------------------------------
+var finalise_Message = "Finalise";
+// -----------------------------------------------------------------------------
+console.log("RESULT: --- " + finalise_Message + " ---");
+var finalise_1Tx = crowdsale.finalizeByAdmin({from: owner1, gas: 1000000, gasPrice: defaultGasPrice});
+while (txpool.status.pending > 0) {
+}
+printBalances();
+failIfTxStatusError(finalise_1Tx, finalise_Message + " - crowdsale.finalize()");
+printTxData("finalise_1Tx", finalise_1Tx);
+printCrowdsaleContractDetails();
+printTreasuryContractDetails();
+printTokenContractDetails();
+console.log("RESULT: ");
+
+
+// -----------------------------------------------------------------------------
+var refundVote_Message = "Refund Vote";
+// -----------------------------------------------------------------------------
+console.log("RESULT: --- " + refundVote_Message + " ---");
+var refundVote_1Tx = votingProxy.startRefundInvestorsBallot({from: owner1, gas: 1000000, gasPrice: defaultGasPrice});
+while (txpool.status.pending > 0) {
+}
+printBalances();
+failIfTxStatusError(refundVote_1Tx, refundVote_Message + " - votingProxy.startRefundInvestorsBallot()");
+printTxData("refundVote_1Tx", refundVote_1Tx);
+printCrowdsaleContractDetails();
+printTreasuryContractDetails();
+printTokenContractDetails();
+printVotingProxyContractDetails();
+console.log("RESULT: ");
 
 
 exit;

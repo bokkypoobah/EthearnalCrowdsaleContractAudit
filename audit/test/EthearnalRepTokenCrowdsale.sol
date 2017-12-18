@@ -23,10 +23,10 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
     uint256 public tokenRateUsd = (1 * 1000) / uint256(2);
 
     // Mainsale Start Date (11 Nov 16:00 UTC)
-    uint256 public constant saleStartDate = 1513613043; // Mon 18 Dec 2017 16:04:03 UTC
+    uint256 public constant saleStartDate = 1513617313; // Mon 18 Dec 2017 17:15:13 UTC
 
     // Mainsale End Date (11 Dec 16:00 UTC)
-    uint256 public constant saleEndDate = 1513613088; // Mon 18 Dec 2017 16:04:48 UTC
+    uint256 public constant saleEndDate = 1513617358; // Mon 18 Dec 2017 17:15:58 UTC
 
     // How many tokens generate for the team, ratio with 3 decimals digits
     uint256 public constant teamTokenRatio = uint256(1 * 1000) / 3;
@@ -134,7 +134,7 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
             (weiToBuy > 0)
         );
         // weiToBuy = min(weiToBuy, getWeiAllowedFromAddress(recipient));
-        // require(weiToBuy > 0);
+        require(weiToBuy > 0);
         weiToBuy = min(weiToBuy, convertUsdToEther(saleCapUsd).sub(weiRaised));
         require(weiToBuy > 0);
         uint256 tokenAmount = getTokenAmountForEther(weiToBuy);

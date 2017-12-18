@@ -62,8 +62,9 @@ Commits
   * [x] contract LockableToken is StandardToken, Ownable
 * [ ] [code-review/MultiOwnable.md](code-review/MultiOwnable.md)
   * [ ] contract MultiOwnable
-* [ ] [code-review/RefundInvestorsBallot.md](code-review/RefundInvestorsBallot.md)
-  * [ ] contract RefundInvestorsBallot is IBallot
+* [x] [code-review/RefundInvestorsBallot.md](code-review/RefundInvestorsBallot.md)
+  * [x] contract RefundInvestorsBallot is IBallot
+    * NOTE A month is 5 weeks
 * [x] [code-review/Treasury.md](code-review/Treasury.md)
   * [x] contract Treasury is MultiOwnable
 * [x] [code-review/VotingProxy.md](code-review/VotingProxy.md)

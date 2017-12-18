@@ -100,6 +100,7 @@ var votingProxyAbi = JSON.parse(votingProxyOutput.contracts["$VOTINGPROXYSOL:Vot
 var votingProxyBin = "0x" + votingProxyOutput.contracts["$VOTINGPROXYSOL:VotingProxy"].bin;
 var crowdsaleAbi = JSON.parse(crowdsaleOutput.contracts["$CROWDSALESOL:EthearnalRepTokenCrowdsale"].abi);
 var crowdsaleBin = "0x" + crowdsaleOutput.contracts["$CROWDSALESOL:EthearnalRepTokenCrowdsale"].bin;
+var refundInvestorsBallotAbi = JSON.parse(votingProxyOutput.contracts["RefundInvestorsBallot.sol:RefundInvestorsBallot"].abi);
 
 // console.log("DATA: tokenAbi=" + JSON.stringify(tokenAbi));
 // console.log("DATA: tokenBin=" + JSON.stringify(tokenBin));
@@ -109,7 +110,7 @@ var crowdsaleBin = "0x" + crowdsaleOutput.contracts["$CROWDSALESOL:EthearnalRepT
 // console.log("DATA: votingProxyBin=" + JSON.stringify(votingProxyBin));
 // console.log("DATA: crowdsaleAbi=" + JSON.stringify(crowdsaleAbi));
 // console.log("DATA: crowdsaleBin=" + JSON.stringify(crowdsaleBin));
-
+// console.log("DATA: refundInvestorsBallotAbi=" + JSON.stringify(refundInvestorsBallotAbi));
 
 unlockAccounts("$PASSWORD");
 printBalances();
@@ -337,9 +338,24 @@ console.log("RESULT: --- " + refundVote_Message + " ---");
 var refundVote_1Tx = votingProxy.startRefundInvestorsBallot({from: owner1, gas: 1000000, gasPrice: defaultGasPrice});
 while (txpool.status.pending > 0) {
 }
+var refundInvestorsBallot = eth.contract(refundInvestorsBallotAbi).at(votingProxy.currentRefundInvestorsBallot());
+var refundVote_2Tx = refundInvestorsBallot.vote("yes", {from: account3, gas: 1000000, gasPrice: defaultGasPrice});
+var refundVote_3Tx = refundInvestorsBallot.vote("yes", {from: account4, gas: 1000000, gasPrice: defaultGasPrice});
+var refundVote_4Tx = refundInvestorsBallot.vote("yes", {from: account5, gas: 1000000, gasPrice: defaultGasPrice});
+var refundVote_5Tx = refundInvestorsBallot.vote("yes", {from: account6, gas: 1000000, gasPrice: defaultGasPrice});
+while (txpool.status.pending > 0) {
+}
 printBalances();
 failIfTxStatusError(refundVote_1Tx, refundVote_Message + " - votingProxy.startRefundInvestorsBallot()");
+failIfTxStatusError(refundVote_2Tx, refundVote_Message + " - refundInvestorsBallot.vote(yes) ac3");
+failIfTxStatusError(refundVote_3Tx, refundVote_Message + " - refundInvestorsBallot.vote(yes) ac4");
+failIfTxStatusError(refundVote_4Tx, refundVote_Message + " - refundInvestorsBallot.vote(yes) ac5");
+failIfTxStatusError(refundVote_5Tx, refundVote_Message + " - refundInvestorsBallot.vote(yes) ac6");
 printTxData("refundVote_1Tx", refundVote_1Tx);
+printTxData("refundVote_2Tx", refundVote_2Tx);
+printTxData("refundVote_3Tx", refundVote_3Tx);
+printTxData("refundVote_4Tx", refundVote_4Tx);
+printTxData("refundVote_5Tx", refundVote_5Tx);
 printCrowdsaleContractDetails();
 printTreasuryContractDetails();
 printTokenContractDetails();

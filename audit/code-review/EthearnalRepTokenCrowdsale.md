@@ -7,13 +7,18 @@ Source file [../../contracts/EthearnalRepTokenCrowdsale.sol](../../contracts/Eth
 <hr />
 
 ```javascript
+// BK Ok
 pragma solidity ^0.4.15;
 
+// BK Next 4 Ok
 import 'zeppelin-solidity/contracts/math/SafeMath.sol';
 import './EthearnalRepToken.sol';
 import './Treasury.sol';
 import "./MultiOwnable.sol";
 
+// BK NOTE - Whitelisted investors can contribute before saleStartDate
+// BK NOTE - Non-whitelisted investors can contribute after saleStartDate and before saleEndDate
+// BK Ok
 contract EthearnalRepTokenCrowdsale is MultiOwnable {
     using SafeMath for uint256;
 
@@ -22,13 +27,16 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
      */
 
     // Token Contract
+    // BK Ok
     EthearnalRepToken public token;
 
     // Ethereum rate, how much USD does 1 ether cost
     // The actual value is set by setEtherRateUsd
+    // BK Ok
     uint256 etherRateUsd = 300;
 
     // Token price in Ether, 1 token is 0.5 USD, 3 decimals
+    // BK Ok
     uint256 public tokenRateUsd = (1 * 1000) / uint256(2);
 
     // Mainsale Start Date (11 Nov 16:00 UTC)
@@ -101,14 +109,20 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
         setupOwners(_owners);
     }
 
+    // BK Ok - Fallback function, payable
     function() public payable {
+        // BK Ok
         if (whitelist[msg.sender]) {
+            // BK Ok
             buyForWhitelisted();
+        // BK Ok
         } else {
+            // BK Ok
             buyTokens();
         }
     }
 
+    // BK Ok - Only owner can execute
     function setTokenContract(address _token) public onlyOwner {
         require(_token != 0x0 && token == address(0));
         require(EthearnalRepToken(_token).owner() == address(this));
@@ -119,8 +133,11 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
     }
 
     function buyForWhitelisted() public payable {
+        // BK Ok
         require(token != address(0));
+        // BK Ok
         address whitelistedInvestor = msg.sender;
+        // BK Ok
         require(whitelist[whitelistedInvestor]);
         uint256 weiToBuy = msg.value;
         require(weiToBuy > 0);
@@ -134,7 +151,9 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
     }
 
     function buyTokens() public payable {
+        // BK Ok
         require(token != address(0));
+        // BK Ok
         address recipient = msg.sender;
         State state = getCurrentState();
         uint256 weiToBuy = msg.value;

@@ -21,11 +21,15 @@ contract Ballot is IBallot {
     // BK Ok
     uint256 public initialQuorumPercent = 51;
 
-    // BK Ok - Constructor
+    // BK Ok - Constructor, called by VotingProxy
     function Ballot(address _tokenContract) {
+        // BK Ok
         tokenContract = EthearnalRepToken(_tokenContract);
+        // BK Ok
         proxyVotingContract = VotingProxy(msg.sender);
+        // BK Ok
         ballotStarted = getTime();
+        // BK Ok
         isVotingActive = true;
     }
     

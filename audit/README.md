@@ -38,12 +38,13 @@ Commits
 * **LOW IMPORTANCE** In *MultiOwnable*, consider making `owners` and `multiOwnableCreator` public
 * **LOW IMPORTANCE** The tokens generated for the team is 33% of the crowdsale raised tokens. When worked out on the total tokens
   the team tokens amount to 24.98% of the total tokens. Please confirm this is the expected percentage
-  * [x] Team confirmed that the expected team token percentage is 25%
-
-### TODO
-
-* Check `EthearnalRepTokenCrowdsale.getWeiAllowedFromAddress(...)`
-* Check percentage refunds
+  * [x] Dec 20 2017 - Team confirmed that the expected team token percentage is 25%
+* **LOW IMPORTANCE** `MultiOwnable.setupOwners(...)` should be marked `public`
+* **LOW IMPORTANCE** The `address` parameter in `Treasury.RefundedInvestor(...)` should be marked `indexed`
+* **LOW IMPORTANCE** The `address` parameter in `EthearnalRepTokenCrowdsale.ChangeReturn(...)` and 
+  `TokenPurchase.ChangeReturn(...)` should be marked `indexed`
+* **VERY LOW IMPORTANCE** The second `require(weiToBuy > 0);` statement in `EthearnalRepTokenCrowdsale.buyTokens()` is redundant as
+  the first `require(weiToBuy > 0);` is followed by a `min(weiToBuy, ...)` statement
 
 <br />
 

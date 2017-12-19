@@ -90,9 +90,11 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
 
 
     // Extra money each address can spend each hour
+    // BK Ok
     uint256 hourLimitByAddressUsd = 1000;
 
     // Wallet to store all raised money
+    // BK Ok
     Treasury public treasuryContract = Treasury(0x0);
 
     /* *******
@@ -105,18 +107,27 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
      * Public methods
      */
 
+    // BK Ok - Constructor
     function EthearnalRepTokenCrowdsale(
         address[] _owners,
         address _treasuryContract,
         address _teamTokenWallet
     ) {
+        // BK Ok
         require(_owners.length > 1);
+        // BK Ok
         require(_treasuryContract != 0x0);
+        // BK Ok
         require(_teamTokenWallet != 0x0);
+        // BK Ok
         require(Treasury(_treasuryContract).votingProxyContract() != address(0));
+        // BK Ok
         require(Treasury(_treasuryContract).tokenContract() != address(0));
+        // BK Ok
         treasuryContract = Treasury(_treasuryContract);
+        // BK Ok
         teamTokenWallet = _teamTokenWallet;
+        // BK Ok
         setupOwners(_owners);
     }
 
@@ -135,14 +146,21 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
 
     // BK Ok - Only owner can execute
     function setTokenContract(address _token) public onlyOwner {
+        // BK Ok
         require(_token != 0x0 && token == address(0));
+        // BK Ok
         require(EthearnalRepToken(_token).owner() == address(this));
+        // BK Ok
         require(EthearnalRepToken(_token).totalSupply() == 0);
+        // BK Ok
         require(EthearnalRepToken(_token).isLocked());
+        // BK Ok
         require(!EthearnalRepToken(_token).mintingFinished());
+        // BK Ok
         token = EthearnalRepToken(_token);
     }
 
+    // BK Ok - Can be executed by whitelisted accounts, payable
     function buyForWhitelisted() public payable {
         // BK Ok
         require(token != address(0));
@@ -150,48 +168,78 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
         address whitelistedInvestor = msg.sender;
         // BK Ok
         require(whitelist[whitelistedInvestor]);
+        // BK Ok
         uint256 weiToBuy = msg.value;
+        // BK Ok
         require(weiToBuy > 0);
+        // BK Ok
         uint256 tokenAmount = getTokenAmountForEther(weiToBuy);
+        // BK Ok
         require(tokenAmount > 0);
+        // BK Ok
         weiRaised = weiRaised.add(weiToBuy);
+        // BK Ok
         raisedByAddress[whitelistedInvestor] = raisedByAddress[whitelistedInvestor].add(weiToBuy);
+        // BK Ok
         assert(token.mint(whitelistedInvestor, tokenAmount));
+        // BK Ok
         forwardFunds(weiToBuy);
+        // BK Ok - Log event
         TokenPurchase(whitelistedInvestor, weiToBuy, tokenAmount);
     }
 
+    // BK Ok - Can be executed by anyone, payable
     function buyTokens() public payable {
         // BK Ok
         require(token != address(0));
         // BK Ok
         address recipient = msg.sender;
+        // BK Ok
         State state = getCurrentState();
+        // BK Ok
         uint256 weiToBuy = msg.value;
+        // BK Ok
         require(
             (state == State.MainSale) &&
             (weiToBuy > 0)
         );
+        // BK Ok - 3.333333333333333333 ETH per hour from start of sale - amount already contributed
         weiToBuy = min(weiToBuy, getWeiAllowedFromAddress(recipient));
+        // BK Ok
         require(weiToBuy > 0);
+        // BK Ok
         weiToBuy = min(weiToBuy, convertUsdToEther(saleCapUsd).sub(weiRaised));
+        // BK Ok - Following statement is redundant due to check above and the min(...) function, but Ok
         require(weiToBuy > 0);
+        // BK Ok
         uint256 tokenAmount = getTokenAmountForEther(weiToBuy);
+        // BK Ok
         require(tokenAmount > 0);
+        // BK Ok
         uint256 weiToReturn = msg.value.sub(weiToBuy);
+        // BK Ok
         weiRaised = weiRaised.add(weiToBuy);
+        // BK Ok
         raisedByAddress[recipient] = raisedByAddress[recipient].add(weiToBuy);
+        // BK Ok
         if (weiToReturn > 0) {
+            // BK Ok
             recipient.transfer(weiToReturn);
+            // BK Ok - Log event
             ChangeReturn(recipient, weiToReturn);
         }
+        // BK Ok
         assert(token.mint(recipient, tokenAmount));
+        // BK Ok
         forwardFunds(weiToBuy);
+        // BK Ok - Log event
         TokenPurchase(recipient, weiToBuy, tokenAmount);
     }
 
     // TEST
+    // BK Ok - Can only be executed by owner
     function finalizeByAdmin() public onlyOwner {
+        // BK Ok
         finalize();
     }
 
@@ -199,30 +247,40 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
      * Internal methods
      */
 
+    // BK Ok
     function forwardFunds(uint256 _weiToBuy) internal {
+        // BK Ok
         treasuryContract.transfer(_weiToBuy);
     }
 
     // TESTED
+    // BK Ok
     function convertUsdToEther(uint256 usdAmount) constant internal returns (uint256) {
+        // BK Ok
         return usdAmount.mul(1 ether).div(etherRateUsd);
     }
 
     // TESTED
+    // BK Ok
     function getTokenRateEther() public constant returns (uint256) {
         // div(1000) because 3 decimals in tokenRateUsd
+        // BK Ok
         return convertUsdToEther(tokenRateUsd).div(1000);
     }
 
     // TESTED
+    // BK Ok
     function getTokenAmountForEther(uint256 weiAmount) constant internal returns (uint256) {
+        // BK Ok
         return weiAmount
             .div(getTokenRateEther())
             .mul(10 ** uint256(token.decimals()));
     }
 
     // TESTED
+    // BK Ok
     function isReadyToFinalize() internal returns (bool) {
+        // BK Ok
         return(
             (weiRaised >= convertUsdToEther(saleCapUsd)) ||
             (getCurrentState() == State.MainSaleDone)
@@ -230,26 +288,38 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
     }
 
     // TESTED
+    // BK Ok
     function min(uint256 a, uint256 b) internal returns (uint256) {
+        // BK Ok
         return (a < b) ? a: b;
     }
 
     // TESTED
+    // BK Ok
     function max(uint256 a, uint256 b) internal returns (uint256) {
+        // BK Ok
         return (a > b) ? a: b;
     }
 
     // TESTED
+    // BK Ok
     function ceil(uint a, uint b) internal returns (uint) {
+        // BK Ok
         return ((a.add(b).sub(1)).div(b)).mul(b);
     }
 
     // TESTED
+    // BK Ok
     function getWeiAllowedFromAddress(address _sender) internal returns (uint256) {
+        // BK Ok
         uint256 secondsElapsed = getTime().sub(saleStartDate);
+        // BK Ok
         uint256 fullHours = ceil(secondsElapsed, 3600).div(3600);
+        // BK Ok
         fullHours = max(1, fullHours);
+        // BK Ok -  convertUsdToEther(hourLimitByAddressUsd) = 3.333333333333333333
         uint256 weiLimit = fullHours.mul(convertUsdToEther(hourLimitByAddressUsd));
+        // BK Ok
         return weiLimit.sub(raisedByAddress[_sender]);
     }
 

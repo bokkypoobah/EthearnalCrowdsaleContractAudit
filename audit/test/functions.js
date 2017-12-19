@@ -10,8 +10,8 @@ var accountNames = {};
 
 addAccount(eth.accounts[0], "Account #0 - Miner");
 addAccount(eth.accounts[1], "Account #1 - Contract Owner");
-addAccount(eth.accounts[2], "Account #2 - Whitelisted");
-addAccount(eth.accounts[3], "Account #3 - Whitelisted");
+addAccount(eth.accounts[2], "Account #2");
+addAccount(eth.accounts[3], "Account #3");
 addAccount(eth.accounts[4], "Account #4");
 addAccount(eth.accounts[5], "Account #5");
 addAccount(eth.accounts[6], "Account #6");
@@ -324,7 +324,9 @@ function printTreasuryContractDetails() {
   console.log("RESULT: treasuryContractAddress=" + treasuryContractAddress);
   if (treasuryContractAddress != null && treasuryContractAbi != null) {
     var contract = eth.contract(treasuryContractAbi).at(treasuryContractAddress);
-    // console.log("RESULT: treasury.getOwners()=" + JSON.stringify(contract.getOwners()));
+    console.log("RESULT: treasury.getOwners()=" + JSON.stringify(contract.getOwners()));
+    // console.log("RESULT: treasury.owners()=" + JSON.stringify(contract.owners()));
+    // console.log("RESULT: treasury.multiOwnableCreator()=" + contract.multiOwnableCreator());
     console.log("RESULT: treasury.weiWithdrawed=" + contract.weiWithdrawed() + " " + contract.weiWithdrawed().shift(-18) + " ETH");
     console.log("RESULT: treasury.weiUnlocked=" + contract.weiUnlocked() + " " + contract.weiUnlocked().shift(-18) + " ETH");
     console.log("RESULT: treasury.isCrowdsaleFinished=" + contract.isCrowdsaleFinished());
@@ -407,7 +409,9 @@ function printCrowdsaleContractDetails() {
   console.log("RESULT: crowdsaleContractAddress=" + crowdsaleContractAddress);
   if (crowdsaleContractAddress != null && crowdsaleContractAbi != null) {
     var contract = eth.contract(crowdsaleContractAbi).at(crowdsaleContractAddress);
-    // console.log("RESULT: crowdsale.getOwners=" + contract.getOwners());
+    console.log("RESULT: crowdsale.getOwners()=" + JSON.stringify(contract.getOwners()));
+    // console.log("RESULT: crowdsale.owners()=" + JSON.stringify(contract.owners()));
+    // console.log("RESULT: crowdsale.multiOwnableCreator()=" + contract.multiOwnableCreator());
     console.log("RESULT: crowdsale.token=" + contract.token());
     console.log("RESULT: crowdsale.etherRateUsd=" + contract.etherRateUsd());
     console.log("RESULT: crowdsale.tokenRateUsd=" + contract.tokenRateUsd() + " " + contract.tokenRateUsd().shift(-3) + " USD");

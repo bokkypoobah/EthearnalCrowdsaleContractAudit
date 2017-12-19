@@ -35,11 +35,37 @@ Commits
 * **MEDIUM IMPORTANCE** The percentage of refund an investor can withdraw in *Treasury* depends on the ETH balance of the
   *Treasury* contract at the time of withdrawal. The first refund withdrawal will get the highest percentage refund and
   the last withdrawal will get the lowest percentage refund
+* **LOW IMPORTANCE** In *MultiOwnable*, consider making `owners` and `multiOwnableCreator` public
 
 ### TODO
 
 * Check `EthearnalRepTokenCrowdsale.getWeiAllowedFromAddress(...)`
 * Check percentage refunds
+
+<br />
+
+<hr />
+
+## Testing
+
+Details of the testing environment can be found in [test](test).
+
+The following functions were tested using the script [test/01_test1.sh](test/01_test1.sh) with the summary results saved
+in [test/test1results.txt](test/test1results.txt) and the detailed output saved in [test/test1output.txt](test/test1output.txt):
+
+* [x] Deploy token contract
+* [x] Deploy treasury contract
+* [x] Deploy votingProxy contract
+* [x] Link treasury contract with the token and votingProxy contracts
+* [x] Deploy crowdsale contract
+* [x] Link treasury contract with the crowdsale contract
+* [x] Transfer token contract ownership to the crowdsale contract
+* [x] Link the crowdsale contract to the token contract
+* [x] Send contributions to the cap
+* [x] Finalise the crowdsale
+* [x] Withdraw team funds (10%)
+* [x] Vote to refund
+* [x] Withdraw refunds
 
 <br />
 

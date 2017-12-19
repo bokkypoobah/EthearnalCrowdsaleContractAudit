@@ -30,9 +30,9 @@ TEST1RESULTS=`grep ^TEST1RESULTS= settings.txt | sed "s/^.*=//"`
 CURRENTTIME=`date +%s`
 CURRENTTIMES=`date -r $CURRENTTIME -u`
 
-START_DATE=`echo "$CURRENTTIME+75" | bc`
+START_DATE=`echo "$CURRENTTIME+90" | bc`
 START_DATE_S=`date -r $START_DATE -u`
-END_DATE=`echo "$CURRENTTIME+120" | bc`
+END_DATE=`echo "$CURRENTTIME+150" | bc`
 END_DATE_S=`date -r $END_DATE -u`
 
 printf "MODE               = '$MODE'\n" | tee $TEST1OUTPUT
@@ -64,11 +64,14 @@ printf "END_DATE           = '$END_DATE' '$END_DATE_S'\n" | tee -a $TEST1OUTPUT
 `perl -pi -e "s/zeppelin-solidity\/contracts\///" *.sol`
 `perl -pi -e "s/saleStartDate \= 1510416000;.*$/saleStartDate \= $START_DATE; \/\/ $START_DATE_S/" $CROWDSALESOL`
 `perl -pi -e "s/saleEndDate \= 1513008000;.*$/saleEndDate \= $END_DATE; \/\/ $END_DATE_S/" $CROWDSALESOL`
-`perl -pi -e "s/getOwners\(\) public returns/getOwners\(\) public constant returns/" $TREASURYSOL`
 `perl -pi -e "s/uint256 etherRateUsd/uint256 public etherRateUsd/" $CROWDSALESOL`
 `perl -pi -e "s/uint256 hourLimitByAddressUsd/uint256 public hourLimitByAddressUsd/" $CROWDSALESOL`
 `perl -pi -e "s/getCurrentState\(\) internal returns/getCurrentState\(\) public returns/" $CROWDSALESOL`
 `perl -pi -e "s/weiToBuy \= min\(weiToBuy\, getWeiAllowedFromAddress\(recipient\)\);/\/\/ weiToBuy \= min\(weiToBuy\, getWeiAllowedFromAddress\(recipient\)\);/" $CROWDSALESOL`
+`perl -pi -e "s/getOwners\(\) public returns/getOwners\(\) public constant returns/" MultiOwnable.sol`
+`perl -pi -e "s/address\[\] owners;/address\[\] public owners;/" MultiOwnable.sol`
+`perl -pi -e "s/address multiOwnableCreator \= 0x0;/address public multiOwnableCreator \= 0x0;/" MultiOwnable.sol`
+
 
 for FILE in Ballot.sol EthearnalRepTokenCrowdsale.sol LockableToken.sol MultiOwnable.sol Treasury.sol EthearnalRepToken.sol IBallot.sol RefundInvestorsBallot.sol VotingProxy.sol
 do
@@ -332,6 +335,22 @@ console.log("RESULT: ");
 
 
 // -----------------------------------------------------------------------------
+var withdrawTeamFunds_Message = "Withdraw Refunds";
+// -----------------------------------------------------------------------------
+console.log("RESULT: --- " + withdrawTeamFunds_Message + " ---");
+var withdrawTeamFunds_1Tx = treasury.withdrawTeamFunds({from: owner1, gas: 1000000, gasPrice: defaultGasPrice});
+while (txpool.status.pending > 0) {
+}
+printBalances();
+failIfTxStatusError(withdrawTeamFunds_1Tx, withdrawTeamFunds_Message + " - treasury.withdrawTeamFunds()");
+printTxData("withdrawTeamFunds_1Tx", withdrawTeamFunds_1Tx);
+printCrowdsaleContractDetails();
+printTreasuryContractDetails();
+printTokenContractDetails();
+console.log("RESULT: ");
+
+
+// -----------------------------------------------------------------------------
 var refundVote_Message = "Refund Vote";
 // -----------------------------------------------------------------------------
 console.log("RESULT: --- " + refundVote_Message + " ---");
@@ -342,6 +361,8 @@ var refundInvestorsBallot = eth.contract(refundInvestorsBallotAbi).at(votingProx
 var refundVote_2Tx = refundInvestorsBallot.vote("yes", {from: account3, gas: 1000000, gasPrice: defaultGasPrice});
 var refundVote_3Tx = refundInvestorsBallot.vote("yes", {from: account4, gas: 1000000, gasPrice: defaultGasPrice});
 var refundVote_4Tx = refundInvestorsBallot.vote("yes", {from: account5, gas: 1000000, gasPrice: defaultGasPrice});
+ while (txpool.status.pending > 0) {
+}
 var refundVote_5Tx = refundInvestorsBallot.vote("yes", {from: account6, gas: 1000000, gasPrice: defaultGasPrice});
 while (txpool.status.pending > 0) {
 }
@@ -350,12 +371,34 @@ failIfTxStatusError(refundVote_1Tx, refundVote_Message + " - votingProxy.startRe
 failIfTxStatusError(refundVote_2Tx, refundVote_Message + " - refundInvestorsBallot.vote(yes) ac3");
 failIfTxStatusError(refundVote_3Tx, refundVote_Message + " - refundInvestorsBallot.vote(yes) ac4");
 failIfTxStatusError(refundVote_4Tx, refundVote_Message + " - refundInvestorsBallot.vote(yes) ac5");
-failIfTxStatusError(refundVote_5Tx, refundVote_Message + " - refundInvestorsBallot.vote(yes) ac6");
+passIfTxStatusError(refundVote_5Tx, refundVote_Message + " - refundInvestorsBallot.vote(yes) ac6. Expecting failure as vote closed");
 printTxData("refundVote_1Tx", refundVote_1Tx);
 printTxData("refundVote_2Tx", refundVote_2Tx);
 printTxData("refundVote_3Tx", refundVote_3Tx);
 printTxData("refundVote_4Tx", refundVote_4Tx);
 printTxData("refundVote_5Tx", refundVote_5Tx);
+printCrowdsaleContractDetails();
+printTreasuryContractDetails();
+printTokenContractDetails();
+printVotingProxyContractDetails();
+console.log("RESULT: ");
+
+
+// -----------------------------------------------------------------------------
+var refundInvestor_Message = "Withdraw Team Funds";
+// -----------------------------------------------------------------------------
+console.log("RESULT: --- " + refundInvestor_Message + " ---");
+var refundInvestor_1Tx = token.approve(treasuryAddress, "30000000000000000000", {from: account3, gas: 100000});
+while (txpool.status.pending > 0) {
+}
+var refundInvestor_2Tx = treasury.refundInvestor("30000000000000000000", {from: account3, gas: 1000000, gasPrice: defaultGasPrice});
+while (txpool.status.pending > 0) {
+}
+printBalances();
+failIfTxStatusError(refundInvestor_1Tx, refundInvestor_Message + " - token.approve(treasuryAddress, 30) by account3");
+failIfTxStatusError(refundInvestor_2Tx, refundInvestor_Message + " - treasury.refundInvestor() by account3");
+printTxData("refundInvestor_1Tx", refundInvestor_1Tx);
+printTxData("refundInvestor_2Tx", refundInvestor_2Tx);
 printCrowdsaleContractDetails();
 printTreasuryContractDetails();
 printTokenContractDetails();

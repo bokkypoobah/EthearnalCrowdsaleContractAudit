@@ -3,8 +3,8 @@ pragma solidity ^0.4.15;
 
 contract MultiOwnable {
     mapping (address => bool) public ownerRegistry;
-    address[] owners;
-    address multiOwnableCreator = 0x0;
+    address[] public owners;
+    address public multiOwnableCreator = 0x0;
 
     function MultiOwnable() {
         multiOwnableCreator = msg.sender;
@@ -30,7 +30,7 @@ contract MultiOwnable {
         _;
     }
 
-    function getOwners() public returns (address[]) {
+    function getOwners() public constant returns (address[]) {
         return owners;
     }
 }

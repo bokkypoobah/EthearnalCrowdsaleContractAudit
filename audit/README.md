@@ -4,11 +4,31 @@ Status: Work in progress, waiting for developer's updates
 
 ## Summary
 
-Commits
+Ethernal intends to run a crowdsale in the near future.
+
+Bok Consulting Pty Ltd was commissioned to perform an audit on the Ethereum smart contracts for Ethearnal's crowdsale.
+
+This audit has been conducted on Ethearnal's source code in commits
 [d60e2fc](https://github.com/Ethearnal/SmartContracts/commit/d60e2fca5e5e0a48f37be8170f08773b5c0d99d4) and
 [323eb08](https://github.com/Ethearnal/SmartContracts/commit/323eb0842cb701bbf516473b6129315745550757)
 
+TODO - Check no potential vulnerabilities have been identified in the crowdsale and token contract.
+
+<br />
+
+<hr />
+
 ## Table Of Contents
+
+* [Summary](#summary)
+* [Recommendations](#recommendations)
+* [Potential Vulnerabilities](#potential-vulnerabilities)
+* [Scope](#scope)
+* [Limitations](#limitations)
+* [Due Diligence](#due-diligence)
+* [Risks](#risks)
+* [Testing](#testing)
+* [Code Review](#code-review)
 
 <br />
 
@@ -44,6 +64,64 @@ Commits
   `TokenPurchase.ChangeReturn(...)` should be marked `indexed`. There are a few more events in the other .sol files as well
 * **VERY LOW IMPORTANCE** The second `require(weiToBuy > 0);` statement in `EthearnalRepTokenCrowdsale.buyTokens()` is redundant as
   the first `require(weiToBuy > 0);` is followed by a `min(weiToBuy, ...)` statement
+
+<br />
+
+<hr />
+
+## Potential Vulnerabilities
+
+TODO - Check no potential vulnerabilities have been identified in the crowdsale and token contract.
+
+<br />
+
+<hr />
+
+## Scope
+
+This audit is into the technical aspects of the crowdsale contracts. The primary aim of this audit is to ensure that funds
+contributed to these contracts are not easily attacked or stolen by third parties. The secondary aim of this audit is that
+ensure the coded algorithms work as expected. This audit does not guarantee that that the code is bugfree, but intends to
+highlight any areas of weaknesses.
+
+<br />
+
+<hr />
+
+## Limitations
+
+This audit makes no statements or warranties about the viability of the Ethearnal's business proposition, the individuals
+involved in this business or the regulatory regime for the business model.
+
+<br />
+
+<hr />
+
+## Due Diligence
+
+As always, potential participants in any crowdsale are encouraged to perform their due diligence on the business proposition
+before funding any crowdsales.
+
+Potential participants are also encouraged to only send their funds to the official crowdsale Ethereum address, published on
+the crowdsale beneficiary's official communication channel.
+
+Scammers have been publishing phishing address in the forums, twitter and other communication channels, and some go as far as
+duplicating crowdsale websites. Potential participants should NOT just click on any links received through these messages.
+Scammers have also hacked the crowdsale website to replace the crowdsale contract address with their scam address.
+ 
+Potential participants should also confirm that the verified source code on EtherScan.io for the published crowdsale address
+matches the audited source code, and that the deployment parameters are correctly set, including the constant parameters.
+
+<br />
+
+<hr />
+
+## Risks
+
+* ETH contributions to the crowdsale are transferred to the *Treasury* contract and are held there until released to the
+  crowdsale project on a schedule. In non-refund mode, only the crowdsale contract owner(s) can withdraw the ETH. In
+  refund mode, any contributor is able to withdraw their refunds by calling the `refundInvestor(...)` function
+  * [ ] TODO - There is an outstanding **MEDIUM IMPORTANCE** bug (see above) in the logic of this function
 
 <br />
 
@@ -131,3 +209,4 @@ Excluded as this is used for testing:
 
 <br />
 
+(c) BokkyPooBah / Bok Consulting Pty Ltd for Ethearnal - Dec 20 2017. The MIT Licence.

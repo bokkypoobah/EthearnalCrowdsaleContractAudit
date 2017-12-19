@@ -1,6 +1,6 @@
 # Ethearnal Crowdsale Contract Audit
 
-Status: Work in progress
+Status: Work in progress, waiting for developer's updates
 
 ## Summary
 
@@ -40,9 +40,8 @@ Commits
   the team tokens amount to 24.98% of the total tokens. Please confirm this is the expected percentage
   * [x] Dec 20 2017 - Team confirmed that the expected team token percentage is 25%
 * **LOW IMPORTANCE** `MultiOwnable.setupOwners(...)` should be marked `public`
-* **LOW IMPORTANCE** The `address` parameter in `Treasury.RefundedInvestor(...)` should be marked `indexed`
-* **LOW IMPORTANCE** The `address` parameter in `EthearnalRepTokenCrowdsale.ChangeReturn(...)` and 
-  `TokenPurchase.ChangeReturn(...)` should be marked `indexed`
+* **LOW IMPORTANCE** The `address` parameter in `Treasury.RefundedInvestor(...)`, `EthearnalRepTokenCrowdsale.ChangeReturn(...)` and 
+  `TokenPurchase.ChangeReturn(...)` should be marked `indexed`. There are a few more events in the other .sol files as well
 * **VERY LOW IMPORTANCE** The second `require(weiToBuy > 0);` statement in `EthearnalRepTokenCrowdsale.buyTokens()` is redundant as
   the first `require(weiToBuy > 0);` is followed by a `min(weiToBuy, ...)` statement
 
@@ -86,8 +85,8 @@ in [test/test1results.txt](test/test1results.txt) and the detailed output saved 
     * [ ] Issue - `Ballot.initialQuorumPercent` shadows `IBallot.initialQuorumPercent`
 * [x] [code-review/EthearnalRepToken.md](code-review/EthearnalRepToken.md)
   * [x] contract EthearnalRepToken is MintableToken, LockableToken
-* [ ] [code-review/EthearnalRepTokenCrowdsale.md](code-review/EthearnalRepTokenCrowdsale.md)
-  * [ ] contract EthearnalRepTokenCrowdsale is MultiOwnable
+* [x] [code-review/EthearnalRepTokenCrowdsale.md](code-review/EthearnalRepTokenCrowdsale.md)
+  * [x] contract EthearnalRepTokenCrowdsale is MultiOwnable
 * [x] [code-review/LockableToken.md](code-review/LockableToken.md)
   * [x] contract LockableToken is StandardToken, Ownable
 * [x] [code-review/MultiOwnable.md](code-review/MultiOwnable.md)
@@ -126,119 +125,9 @@ From https://github.com/OpenZeppelin/zeppelin-solidity/commit/725ed40a57e8973b3a
 
 Excluded as this is used for testing:
 
-* [ ] [code-review/Migrations.md](code-review/Migrations.md)
-  * [ ] contract Migrations
+* [../contracts/Migrations.sol](../contracts/Migrations.sol)
 
 <br />
 
-### Flattened Files
+<br />
 
-Note that the order of the contract and library units have changed in [323eb08](https://github.com/Ethearnal/SmartContracts/commit/323eb0842cb701bbf516473b6129315745550757).
-
-* [x] [code-review-flat/EthearnalRepToken_flat.md](code-review-flat/EthearnalRepToken_flat.md)
-  * [x] library SafeMath
-  * [x] contract Ownable
-  * [x] contract ERC20Basic
-  * [x] contract ERC20 is ERC20Basic
-  * [x] contract BasicToken is ERC20Basic
-  * [x] contract StandardToken is ERC20, BasicToken
-  * [x] contract LockableToken is StandardToken, Ownable
-  * [x] contract MintableToken is StandardToken, Ownable
-  * [x] contract EthearnalRepToken is MintableToken, LockableToken
-  * Comparison of source files to flattened files using script [flatten/01_EthearnalRepToken.sh](flatten/01_EthearnalRepToken.sh) with
-    output in [flatten/01_diff.txt](flatten/01_diff.txt)
-* [ ] [code-review-flat/EthearnalRepTokenCrowdsale_flat.md](code-review-flat/EthearnalRepTokenCrowdsale_flat.md)
-  * [x] library SafeMath
-  * [ ] contract MultiOwnable
-  * [ ] contract Treasury is MultiOwnable
-  * [ ] contract IBallot
-  * [ ] contract Ballot is IBallot
-  * [ ] contract EthearnalRepTokenCrowdsale is MultiOwnable
-  * [x] contract ERC20Basic
-  * [x] contract ERC20 is ERC20Basic
-  * [x] contract Ownable
-  * [ ] contract VotingProxy is Ownable
-  * [x] contract BasicToken is ERC20Basic
-  * [ ] contract RefundInvestorsBallot is IBallot
-  * [x] contract StandardToken is ERC20, BasicToken
-  * [x] contract LockableToken is StandardToken, Ownable
-  * [x] contract MintableToken is StandardToken, Ownable
-  * [x] contract EthearnalRepToken is MintableToken, LockableToken
-  * Comparison of source files to flattened files using script [flatten/02_EthearnalRepTokenCrowdsale.sh](flatten/02_EthearnalRepTokenCrowdsale.sh) with
-    output in [flatten/02_diff.txt](flatten/02_diff.txt)
-* [ ] [code-review-flat/IncreaseWithdrawalBallot_flat.md](code-review-flat/IncreaseWithdrawalBallot_flat.md)
-  * [x] contract ERC20Basic
-  * [x] contract ERC20 is ERC20Basic
-  * [x] contract Ownable
-  * [x] library SafeMath
-  * [x] contract BasicToken is ERC20Basic
-  * [x] contract StandardToken is ERC20, BasicToken
-  * [x] contract LockableToken is StandardToken, Ownable
-  * [ ] contract VotingProxy is Ownable
-  * [ ] contract IBallot
-  * [ ] contract Ballot is IBallot
-  * [ ] contract RefundInvestorsBallot is IBallot
-  * [x] contract MintableToken is StandardToken, Ownable
-  * [x] contract EthearnalRepToken is MintableToken, LockableToken
-  * [ ] contract MultiOwnable
-  * [ ] contract Treasury is MultiOwnable
-  * [ ] contract EthearnalRepTokenCrowdsale is MultiOwnable
-  * Comparison of source files to flattened files using script [flatten/03_IncreaseWithdrawalBallot.sh](flatten/03_IncreaseWithdrawalBallot.sh) with
-    output in [flatten/03_diff.txt](flatten/03_diff.txt)
-* [ ] [code-review-flat/RefundInvestorsBallot_flat.md](code-review-flat/RefundInvestorsBallot_flat.md)
-  * [x] contract Ownable
-  * [x] library SafeMath
-  * [ ] contract IBallot
-  * [ ] contract Ballot is IBallot
-  * [ ] contract MultiOwnable
-  * [ ] contract EthearnalRepTokenCrowdsale is MultiOwnable
-  * [ ] contract Treasury is MultiOwnable
-  * [x] contract ERC20Basic
-  * [x] contract ERC20 is ERC20Basic
-  * [x] contract BasicToken is ERC20Basic
-  * [x] contract StandardToken is ERC20, BasicToken
-  * [x] contract LockableToken is StandardToken, Ownable
-  * [ ] contract RefundInvestorsBallot is IBallot
-  * [ ] contract VotingProxy is Ownable
-  * [x] contract MintableToken is StandardToken, Ownable
-  * [x] contract EthearnalRepToken is MintableToken, LockableToken
-  * Comparison of source files to flattened files using script [flatten/04_RefundInvestorsBallot.sh](flatten/04_RefundInvestorsBallot.sh) with
-    output in [flatten/04_diff.txt](flatten/04_diff.txt)
-* [ ] [code-review-flat/Treasury_flat.md](code-review-flat/Treasury_flat.md)
-  * [x] contract ERC20Basic
-  * [ ] contract MultiOwnable
-  * [x] library SafeMath
-  * [ ] contract EthearnalRepTokenCrowdsale is MultiOwnable
-  * [x] contract BasicToken is ERC20Basic
-  * [x] contract Ownable
-  * [ ] contract VotingProxy is Ownable
-  * [ ] contract IBallot
-  * [ ] contract RefundInvestorsBallot is IBallot
-  * [x] contract ERC20 is ERC20Basic
-  * [x] contract StandardToken is ERC20, BasicToken
-  * [x] contract LockableToken is StandardToken, Ownable
-  * [x] contract MintableToken is StandardToken, Ownable
-  * [x] contract EthearnalRepToken is MintableToken, LockableToken
-  * [ ] contract Ballot is IBallot
-  * [ ] contract Treasury is MultiOwnable
-  * Comparison of source files to flattened files using script [flatten/05_Treasury.sh](flatten/05_Treasury.sh) with
-    output in [flatten/05_diff.txt](flatten/05_diff.txt)
-* [ ] [code-review-flat/VotingProxy_flat.md](code-review-flat/VotingProxy_flat.md)
-  * [ ] contract MultiOwnable
-  * [x] library SafeMath
-  * [ ] contract IBallot
-  * [ ] contract RefundInvestorsBallot is IBallot
-  * [ ] contract Treasury is MultiOwnable
-  * [ ] contract Ballot is IBallot
-  * [x] contract ERC20Basic
-  * [x] contract ERC20 is ERC20Basic
-  * [x] contract BasicToken is ERC20Basic
-  * [x] contract StandardToken is ERC20, BasicToken
-  * [x] contract Ownable
-  * [ ] contract VotingProxy is Ownable
-  * [ ] contract EthearnalRepTokenCrowdsale is MultiOwnable
-  * [x] contract MintableToken is StandardToken, Ownable
-  * [x] contract LockableToken is StandardToken, Ownable
-  * [x] contract EthearnalRepToken is MintableToken, LockableToken
-  * Comparison of source files to flattened files using script [flatten/06_VotingProxy.sh](flatten/06_VotingProxy.sh) with
-    output in [flatten/06_diff.txt](flatten/06_diff.txt)

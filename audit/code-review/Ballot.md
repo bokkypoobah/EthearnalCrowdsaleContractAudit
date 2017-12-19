@@ -33,16 +33,25 @@ contract Ballot is IBallot {
         isVotingActive = true;
     }
     
+    // BK Ok - Constant function
     function getQuorumPercent() public constant returns (uint256) {
+        // BK Ok
         require(isVotingActive);
         // find number of full weeks alapsed since voting started
+        // BK Ok
         uint256 weeksNumber = getTime().sub(ballotStarted).div(1 weeks);
+        // BK Ok
         if(weeksNumber == 0) {
+            // BK Ok
             return initialQuorumPercent;
         }
+        // BK Ok
         if (initialQuorumPercent < weeksNumber * 10) {
+            // BK Ok
             return 0;
+        // BK Ok
         } else {
+            // BK Ok
             return initialQuorumPercent.sub(weeksNumber * 10);
         }
     }

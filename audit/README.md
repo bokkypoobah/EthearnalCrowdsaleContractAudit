@@ -36,6 +36,9 @@ Commits
   *Treasury* contract at the time of withdrawal. The first refund withdrawal will get the highest percentage refund and
   the last withdrawal will get the lowest percentage refund
 * **LOW IMPORTANCE** In *MultiOwnable*, consider making `owners` and `multiOwnableCreator` public
+* **LOW IMPORTANCE** The tokens generated for the team is 33% of the crowdsale raised tokens. When worked out on the total tokens
+  the team tokens amount to 24.98% of the total tokens. Please confirm this is the expected percentage
+  * [x] Team confirmed that the expected team token percentage is 25%
 
 ### TODO
 
@@ -77,8 +80,8 @@ in [test/test1results.txt](test/test1results.txt) and the detailed output saved 
 
 * [x] [code-review/IBallot.md](code-review/IBallot.md)
   * [x] contract IBallot
-* [ ] [code-review/Ballot.md](code-review/Ballot.md)
-  * [ ] contract Ballot is IBallot
+* [x] [code-review/Ballot.md](code-review/Ballot.md)
+  * [x] contract Ballot is IBallot
     * [ ] Issue - `Ballot.initialQuorumPercent` shadows `IBallot.initialQuorumPercent`
 * [x] [code-review/EthearnalRepToken.md](code-review/EthearnalRepToken.md)
   * [x] contract EthearnalRepToken is MintableToken, LockableToken
@@ -86,13 +89,14 @@ in [test/test1results.txt](test/test1results.txt) and the detailed output saved 
   * [ ] contract EthearnalRepTokenCrowdsale is MultiOwnable
 * [x] [code-review/LockableToken.md](code-review/LockableToken.md)
   * [x] contract LockableToken is StandardToken, Ownable
-* [ ] [code-review/MultiOwnable.md](code-review/MultiOwnable.md)
-  * [ ] contract MultiOwnable
+* [x] [code-review/MultiOwnable.md](code-review/MultiOwnable.md)
+  * [x] contract MultiOwnable
 * [x] [code-review/RefundInvestorsBallot.md](code-review/RefundInvestorsBallot.md)
   * [x] contract RefundInvestorsBallot is IBallot
     * NOTE A month is 5 weeks
 * [x] [code-review/Treasury.md](code-review/Treasury.md)
   * [x] contract Treasury is MultiOwnable
+    * [ ] Issue - Refund percentage depends on the current balance
 * [x] [code-review/VotingProxy.md](code-review/VotingProxy.md)
   * [x] contract VotingProxy is Ownable
 

@@ -40,15 +40,19 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
     uint256 public tokenRateUsd = (1 * 1000) / uint256(2);
 
     // Mainsale Start Date (11 Nov 16:00 UTC)
+    // BK Ok
     uint256 public constant saleStartDate = 1510416000;
 
     // Mainsale End Date (11 Dec 16:00 UTC)
+    // BK Ok
     uint256 public constant saleEndDate = 1513008000;
 
     // How many tokens generate for the team, ratio with 3 decimals digits
+    // BK Ok
     uint256 public constant teamTokenRatio = uint256(1 * 1000) / 3;
 
     // Crowdsale State
+    // BK Next block Ok
     enum State {
         BeforeMainSale, // pre-sale finisehd, before main sale
         MainSale, // main sale is active
@@ -57,24 +61,31 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
     }
 
     // Hard cap for total sale
+    // BK Ok
     uint256 public saleCapUsd = 30 * (10**6);
 
     // Money raised totally
+    // BK Ok
     uint256 public weiRaised = 0;
 
     // This event means everything is finished and tokens
     // are allowed to be used by their owners
+    // BK Ok
     bool public isFinalized = false;
 
     // Wallet to send team tokens
+    // BK Ok
     address public teamTokenWallet = 0x0;
 
     // money received from each customer
+    // BK Ok
     mapping(address => uint256) public raisedByAddress;
 
     // whitelisted investors
+    // BK Ok
     mapping(address => bool) public whitelist;
     // how many whitelisted investors
+    // BK Ok
     uint256 public whitelistedInvestorCounter;
 
 
@@ -242,40 +253,58 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
         return weiLimit.sub(raisedByAddress[_sender]);
     }
 
+    // BK Ok
     function getTime() internal returns (uint256) {
         // Just returns `now` value
         // This function is redefined in EthearnalRepTokenCrowdsaleMock contract
         // to allow testing contract behaviour at different time moments
+        // BK Ok
         return now;
     }
 
     // TESTED
+    // BK Ok
     function getCurrentState() internal returns (State) {
+        // BK Ok
         return getStateForTime(getTime());
     }
 
     // TESTED
+    // BK Ok
     function getStateForTime(uint256 unixTime) internal returns (State) {
+        // BK Ok
         if (isFinalized) {
             // This could be before end date of ICO
             // if hard cap is reached
+            // BK Ok
             return State.Finalized;
         }
+        // BK Ok
         if (unixTime < saleStartDate) {
+            // BK Ok
             return State.BeforeMainSale;
         }
+        // BK Ok
         if (unixTime < saleEndDate) {
+            // BK Ok
             return State.MainSale;
         }
+        // BK Ok
         return State.MainSaleDone;
     }
 
     // TESTED
+    // BK Ok
     function finalize() private {
+        // BK Ok
         if (!isFinalized) {
+            // BK Ok
             require(isReadyToFinalize());
+            // BK Ok
             isFinalized = true;
+            // BK Ok
             mintTeamTokens();
+            // BK Ok
             token.unlock();
             // BK Ok
             treasuryContract.setCrowdsaleFinished();
@@ -283,33 +312,52 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
     }
 
     // TESTED
+    // BK Ok
     function mintTeamTokens() private {
         // div by 1000 because of 3 decimals digits in teamTokenRatio
+        // BK Ok
         var tokenAmount = token.totalSupply().mul(teamTokenRatio).div(1000);
+        // BK Ok
         token.mint(teamTokenWallet, tokenAmount);
     }
 
 
+    // BK Ok - Only owner can execute
     function whitelistInvestor(address _newInvestor) public onlyOwner {
+        // BK Ok
         if(!whitelist[_newInvestor]) {
+            // BK Ok
             whitelist[_newInvestor] = true;
+            // BK Ok
             whitelistedInvestorCounter++;
         }
     }
+    // BK Ok - Only owner can execute
     function whitelistInvestors(address[] _investors) external onlyOwner {
+        // BK Ok
         require(_investors.length <= 250);
+        // BK Ok
         for(uint8 i=0; i<_investors.length;i++) {
+            // BK Ok
             address newInvestor = _investors[i];
+            // BK Ok
             if(!whitelist[newInvestor]) {
+                // BK Ok
                 whitelist[newInvestor] = true;
+                // BK Ok
                 whitelistedInvestorCounter++;
             }
         }
     }
+    // BK Ok - Only owner can execute
     function blacklistInvestor(address _investor) public onlyOwner {
+        // BK Ok
         if(whitelist[_investor]) {
+            // BK Ok
             delete whitelist[_investor];
+            // BK Ok
             if(whitelistedInvestorCounter != 0) {
+                // BK Ok
                 whitelistedInvestorCounter--;
             }
         }

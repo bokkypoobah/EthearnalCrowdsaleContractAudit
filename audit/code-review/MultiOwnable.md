@@ -56,8 +56,8 @@ contract MultiOwnable {
         _;
     }
 
-    // BK NOTE - This should be a constant function
-    function getOwners() public returns (address[]) {
+    // BK Ok - Constant function
+    function getOwners() public constant returns (address[]) {
         // BK Ok
         return owners;
     }

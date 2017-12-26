@@ -8,8 +8,9 @@ Bok Consulting Pty Ltd was commissioned to perform an audit on the Ethereum smar
 
 This audit has been conducted on Ethearnal's source code in commits
 [d60e2fc](https://github.com/Ethearnal/SmartContracts/commit/d60e2fca5e5e0a48f37be8170f08773b5c0d99d4),
-[323eb08](https://github.com/Ethearnal/SmartContracts/commit/323eb0842cb701bbf516473b6129315745550757) and
-[d1bf698](https://github.com/Ethearnal/SmartContracts/commit/d1bf6983695fffef1e6bc1b2fa821e085bdda753).
+[323eb08](https://github.com/Ethearnal/SmartContracts/commit/323eb0842cb701bbf516473b6129315745550757),
+[d1bf698](https://github.com/Ethearnal/SmartContracts/commit/d1bf6983695fffef1e6bc1b2fa821e085bdda753) and
+[12209e3](https://github.com/Ethearnal/SmartContracts/commit/12209e33f49ede867f14d72e5b33e50b12b0fd95).
 
 No potential vulnerabilities have been identified in the crowdsale, token, treasury and voting contracts.
 
@@ -69,10 +70,13 @@ The following recommendations have been addressed:
 * **VERY LOW IMPORTANCE** The second `require(weiToBuy > 0);` statement in `EthearnalRepTokenCrowdsale.buyTokens()` is redundant as
   the first `require(weiToBuy > 0);` is followed by a `min(weiToBuy, ...)` statement
   * [x] Developer pointed out that the second statement is not redundant
-
-And the following recommendations are of low importance:
-
 * **LOW IMPORTANCE** In *MultiOwnable*, `getOwners()` should be declared constant
+  * [x] Fixed in [12209e3](https://github.com/Ethearnal/SmartContracts/commit/12209e33f49ede867f14d72e5b33e50b12b0fd95)
+
+<br />
+
+And the following recommendation is of low importance:
+
 * **LOW IMPORTANCE** In *Treasury*, consider making `teamWallet` public
 
 <br />

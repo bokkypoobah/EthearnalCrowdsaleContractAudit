@@ -25,10 +25,10 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
     uint256 public tokenRateUsd = (1 * 1000) / uint256(2);
 
     // Mainsale Start Date (11 Nov 16:00 UTC)
-    uint256 public constant saleStartDate = 1514292439; // Tue 26 Dec 2017 12:47:19 UTC
+    uint256 public constant saleStartDate = 1514326506; // Tue 26 Dec 2017 22:15:06 UTC
 
     // Mainsale End Date (11 Dec 16:00 UTC)
-    uint256 public constant saleEndDate = 1514292499; // Tue 26 Dec 2017 12:48:19 UTC
+    uint256 public constant saleEndDate = 1514326566; // Tue 26 Dec 2017 22:16:06 UTC
 
     // How many tokens generate for the team, ratio with 3 decimals digits
     uint256 public constant teamTokenRatio = uint256(1 * 1000) / 3;

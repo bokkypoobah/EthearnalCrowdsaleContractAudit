@@ -47,8 +47,6 @@ TODO - Check no potential vulnerabilities have been identified in the crowdsale 
 * **LOW IMPORTANCE** In *EthearnalRepToken*, `decimals` should be defined as `uint8` instead of `uint256` as recommended in the
   recently finalised [ERC20 Token Standard](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20-token-standard.md)
   * [x] Fixed in [323eb08](https://github.com/Ethearnal/SmartContracts/commit/323eb0842cb701bbf516473b6129315745550757)
-* **LOW IMPORTANCE** In *MultiOwnable*, `getOwners()` should be declared constant
-* **LOW IMPORTANCE** In *Treasury*, consider making `teamWallet` public
 * **MEDIUM IMPORTANCE** The variable `IBallot.initialQuorumPercent` is shadowed by `Ballot.initialQuorumPercent`. See
   [Oracles PoA Network Consensus Contracts Audit - Recommendation](https://github.com/bokkypoobah/OraclesPoANetworkConsensusContractsAudit/tree/master/audit#recommendations)
   for a similar issue and [Oracles PoA Network Consensus Contracts Audit - Example To Demonstrate The Shadowing Of Variables](https://github.com/bokkypoobah/OraclesPoANetworkConsensusContractsAudit/tree/master/audit#example-to-demonstrate-the-shadowing-of-variables)
@@ -71,6 +69,8 @@ TODO - Check no potential vulnerabilities have been identified in the crowdsale 
 * **VERY LOW IMPORTANCE** The second `require(weiToBuy > 0);` statement in `EthearnalRepTokenCrowdsale.buyTokens()` is redundant as
   the first `require(weiToBuy > 0);` is followed by a `min(weiToBuy, ...)` statement
   * [x] Developer pointed out that the second statement is not redundant
+* **LOW IMPORTANCE** In *MultiOwnable*, `getOwners()` should be declared constant
+* **LOW IMPORTANCE** In *Treasury*, consider making `teamWallet` public
 
 <br />
 

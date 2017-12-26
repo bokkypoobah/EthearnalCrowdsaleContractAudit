@@ -6,6 +6,7 @@ import './RefundInvestorsBallot.sol';
 import "./EthearnalRepToken.sol";
 import 'ownership/Ownable.sol';
 import 'math/SafeMath.sol';
+import "token/ERC20Basic.sol";
 
 contract VotingProxy is Ownable {
     using SafeMath for uint256;    
@@ -70,5 +71,15 @@ contract VotingProxy is Ownable {
         return now;
     }
 
+    function claimTokens(address _token) public onlyOwner {
+        if (_token == 0x0) {
+            owner.transfer(this.balance);
+            return;
+        }
+    
+        ERC20Basic token = ERC20Basic(_token);
+        uint256 balance = token.balanceOf(this);
+        token.transfer(owner, balance);
+    }
 
 }

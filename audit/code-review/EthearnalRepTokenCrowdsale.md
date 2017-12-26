@@ -102,6 +102,7 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
      * Events
      */
     
+    // BK Next 2 Ok - Events
     event ChangeReturn(address indexed recipient, uint256 amount);
     event TokenPurchase(address indexed buyer, uint256 weiAmount, uint256 tokenAmount);
     /* **************
@@ -210,7 +211,7 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
         require(weiToBuy > 0);
         // BK Ok
         weiToBuy = min(weiToBuy, convertUsdToEther(saleCapUsd).sub(weiRaised));
-        // BK Ok - Following statement is redundant due to check above and the min(...) function, but Ok
+        // BK Ok
         require(weiToBuy > 0);
         // BK Ok
         uint256 tokenAmount = getTokenAmountForEther(weiToBuy);
@@ -434,14 +435,21 @@ contract EthearnalRepTokenCrowdsale is MultiOwnable {
         }
     }
 
+    // BK Ok - Only owner can execute
     function claimTokens(address _token, address _to) public onlyOwner {
+        // BK Ok
         if (_token == 0x0) {
+            // BK Ok
             _to.transfer(this.balance);
+            // BK Ok
             return;
         }
     
+        // BK Ok
         ERC20Basic token = ERC20Basic(_token);
+        // BK Ok
         uint256 balance = token.balanceOf(this);
+        // BK Ok
         token.transfer(_to, balance);
     }
 

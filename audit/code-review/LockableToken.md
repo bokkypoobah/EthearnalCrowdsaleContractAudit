@@ -91,14 +91,21 @@ contract LockableToken is StandardToken, Ownable {
         return now;
     }
 
+    // BK Ok - Only owner can execute
     function claimTokens(address _token) public onlyOwner {
+        // BK Ok
         if (_token == 0x0) {
+            // BK Ok
             owner.transfer(this.balance);
+            // BK Ok
             return;
         }
     
+        // BK Ok
         ERC20Basic token = ERC20Basic(_token);
+        // BK Ok
         uint256 balance = token.balanceOf(this);
+        // BK Ok
         token.transfer(owner, balance);
     }
 

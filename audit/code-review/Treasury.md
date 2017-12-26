@@ -10,12 +10,13 @@ Source file [../../contracts/Treasury.sol](../../contracts/Treasury.sol).
 // BK Ok
 pragma solidity ^0.4.15;
 
-// BK Next 5 Ok
+// BK Next 6 Ok
 import './MultiOwnable.sol';
 import './EthearnalRepTokenCrowdsale.sol';
 import './EthearnalRepToken.sol';
 import './VotingProxy.sol';
 import 'zeppelin-solidity/contracts/math/SafeMath.sol';
+import "zeppelin-solidity/contracts/token/ERC20Basic.sol";
 
 // BK Ok
 contract Treasury is MultiOwnable {
@@ -51,13 +52,17 @@ contract Treasury is MultiOwnable {
     uint256 public withdrawChunk = 0;
     // BK Ok
     VotingProxy public votingProxyContract;
+    // BK Ok
+    uint256 public refundsIssued = 0;
+    // BK Ok
+    uint256 public percentLeft = 0;
 
 
     // BK Next 4 Ok
     event Deposit(uint256 amount);
     event Withdraw(uint256 amount);
     event UnlockWei(uint256 amount);
-    event RefundedInvestor(address investor, uint256 amountRefunded, uint256 tokensBurn);
+    event RefundedInvestor(address indexed investor, uint256 amountRefunded, uint256 tokensBurn);
 
     // BK Ok - Constructor
     function Treasury(address _teamWallet) public {
@@ -181,11 +186,14 @@ contract Treasury is MultiOwnable {
         // BK Ok
         require(address(tokenContract) != address(0x0));
         // BK Ok
+        if (refundsIssued == 0) {
+            // BK Ok
+            percentLeft = percentLeftFromTotalRaised().mul(100*1000).div(1 ether);
+        }
+        // BK Ok
         uint256 tokenRate = crowdsaleContract.getTokenRateEther();
         // BK Ok
         uint256 toRefund = tokenRate.mul(_tokensToBurn).div(1 ether);
-        // BK Ok
-        uint256 percentLeft = percentLeftFromTotalRaised().mul(100*1000).div(1 ether);
         // BK Ok
         toRefund = toRefund.mul(percentLeft).div(100*1000);
         // BK Ok
@@ -194,6 +202,8 @@ contract Treasury is MultiOwnable {
         tokenContract.burnFrom(msg.sender, _tokensToBurn);
         // BK Ok
         msg.sender.transfer(toRefund);
+        // BK Ok
+        refundsIssued = refundsIssued.add(1);
         // BK Ok - Log event
         RefundedInvestor(msg.sender, toRefund, _tokensToBurn);
     }
@@ -214,6 +224,16 @@ contract Treasury is MultiOwnable {
         uint _quotient =  ((_numerator / denominator) + 5) / 10;
         // BK Ok
         return ( _quotient);
+    }
+
+    // BK Ok
+    function claimTokens(address _token, address _to) public onlyOwner {    
+    	// BK Ok
+        ERC20Basic token = ERC20Basic(_token);
+        // BK Ok
+        uint256 balance = token.balanceOf(this);
+        // BK Ok
+        token.transfer(_to, balance);
     }
 }
 

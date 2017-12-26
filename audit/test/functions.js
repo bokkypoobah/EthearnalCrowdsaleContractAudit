@@ -336,6 +336,8 @@ function printTreasuryContractDetails() {
     console.log("RESULT: treasury.isRefundsEnabled=" + contract.isRefundsEnabled());
     console.log("RESULT: treasury.withdrawChunk=" + contract.withdrawChunk() + " " + contract.withdrawChunk().shift(-18) + " ETH");
     console.log("RESULT: treasury.votingProxyContract=" + contract.votingProxyContract());
+    console.log("RESULT: treasury.refundsIssued=" + contract.refundsIssued());
+    console.log("RESULT: treasury.percentLeft=" + contract.percentLeft());
 
     var latestBlock = eth.blockNumber;
     var i;

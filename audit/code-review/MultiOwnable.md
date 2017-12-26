@@ -18,16 +18,16 @@ contract MultiOwnable {
     // BK Ok
     address[] owners;
     // BK Ok
-    address multiOwnableCreator = 0x0;
+    address public multiOwnableCreator = 0x0;
 
     // BK Ok - Constructor
-    function MultiOwnable() {
+    function MultiOwnable() public {
         // BK Ok
         multiOwnableCreator = msg.sender;
     }
 
     // BK Ok - Only original owner can execute, once. Note that there is now ability to transfer ownership of contracts that use this
-    function setupOwners(address[] _owners) {
+    function setupOwners(address[] _owners) public {
         // Owners are allowed to be set up only one time
         // BK Ok
         require(multiOwnableCreator == msg.sender);

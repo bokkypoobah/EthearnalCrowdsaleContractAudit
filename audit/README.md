@@ -9,8 +9,9 @@ Ethernal intends to run a crowdsale in the near future.
 Bok Consulting Pty Ltd was commissioned to perform an audit on the Ethereum smart contracts for Ethearnal's crowdsale.
 
 This audit has been conducted on Ethearnal's source code in commits
-[d60e2fc](https://github.com/Ethearnal/SmartContracts/commit/d60e2fca5e5e0a48f37be8170f08773b5c0d99d4) and
-[323eb08](https://github.com/Ethearnal/SmartContracts/commit/323eb0842cb701bbf516473b6129315745550757)
+[d60e2fc](https://github.com/Ethearnal/SmartContracts/commit/d60e2fca5e5e0a48f37be8170f08773b5c0d99d4),
+[323eb08](https://github.com/Ethearnal/SmartContracts/commit/323eb0842cb701bbf516473b6129315745550757) and
+[d1bf698](https://github.com/Ethearnal/SmartContracts/commit/d1bf6983695fffef1e6bc1b2fa821e085bdda753).
 
 TODO - Check no potential vulnerabilities have been identified in the crowdsale and token contract.
 
@@ -52,18 +53,24 @@ TODO - Check no potential vulnerabilities have been identified in the crowdsale 
   [Oracles PoA Network Consensus Contracts Audit - Recommendation](https://github.com/bokkypoobah/OraclesPoANetworkConsensusContractsAudit/tree/master/audit#recommendations)
   for a similar issue and [Oracles PoA Network Consensus Contracts Audit - Example To Demonstrate The Shadowing Of Variables](https://github.com/bokkypoobah/OraclesPoANetworkConsensusContractsAudit/tree/master/audit#example-to-demonstrate-the-shadowing-of-variables)
   for an example. Same with `RefundInvestorsBallot.initialQuorumPercent`
+  * [x] Fixed in [d1bf698](https://github.com/Ethearnal/SmartContracts/commit/d1bf6983695fffef1e6bc1b2fa821e085bdda753)
 * **MEDIUM IMPORTANCE** The percentage of refund an investor can withdraw in *Treasury* depends on the ETH balance of the
   *Treasury* contract at the time of withdrawal. The first refund withdrawal will get the highest percentage refund and
   the last withdrawal will get the lowest percentage refund
+  * [x] Fixed in [d1bf698](https://github.com/Ethearnal/SmartContracts/commit/d1bf6983695fffef1e6bc1b2fa821e085bdda753)
 * **LOW IMPORTANCE** In *MultiOwnable*, consider making `owners` and `multiOwnableCreator` public
+  * [x] `multiOwnableCreator` made public, not `owners` in [d1bf698](https://github.com/Ethearnal/SmartContracts/commit/d1bf6983695fffef1e6bc1b2fa821e085bdda753)
 * **LOW IMPORTANCE** The tokens generated for the team is 33% of the crowdsale raised tokens. When worked out on the total tokens
   the team tokens amount to 24.98% of the total tokens. Please confirm this is the expected percentage
   * [x] Dec 20 2017 - Team confirmed that the expected team token percentage is 25%
 * **LOW IMPORTANCE** `MultiOwnable.setupOwners(...)` should be marked `public`
+  * [x] Fixed in [d1bf698](https://github.com/Ethearnal/SmartContracts/commit/d1bf6983695fffef1e6bc1b2fa821e085bdda753)
 * **LOW IMPORTANCE** The `address` parameter in `Treasury.RefundedInvestor(...)`, `EthearnalRepTokenCrowdsale.ChangeReturn(...)` and 
   `TokenPurchase.ChangeReturn(...)` should be marked `indexed`. There are a few more events in the other .sol files as well
+  * [x] Fixed in [d1bf698](https://github.com/Ethearnal/SmartContracts/commit/d1bf6983695fffef1e6bc1b2fa821e085bdda753)
 * **VERY LOW IMPORTANCE** The second `require(weiToBuy > 0);` statement in `EthearnalRepTokenCrowdsale.buyTokens()` is redundant as
   the first `require(weiToBuy > 0);` is followed by a `min(weiToBuy, ...)` statement
+  * [x] Developer pointed out that the second statement is not redundant
 
 <br />
 
@@ -156,8 +163,6 @@ in [test/test1results.txt](test/test1results.txt) and the detailed output saved 
 
 ### Original Source Files
 
-* [x] [code-review/IBallot.md](code-review/IBallot.md)
-  * [x] contract IBallot
 * [x] [code-review/Ballot.md](code-review/Ballot.md)
   * [x] contract Ballot is IBallot
     * [ ] Issue - `Ballot.initialQuorumPercent` shadows `IBallot.initialQuorumPercent`

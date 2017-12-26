@@ -10,13 +10,14 @@ Source file [../../contracts/VotingProxy.sol](../../contracts/VotingProxy.sol).
 // BK Ok
 pragma solidity ^0.4.15;
 
-// BK Next 6 Ok
+// BK Next 7 Ok
 import './Treasury.sol';
 import './Ballot.sol';
 import './RefundInvestorsBallot.sol';
 import "./EthearnalRepToken.sol";
 import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
 import 'zeppelin-solidity/contracts/math/SafeMath.sol';
+import "zeppelin-solidity/contracts/token/ERC20Basic.sol";
 
 // BK Ok
 contract VotingProxy is Ownable {
@@ -119,6 +120,23 @@ contract VotingProxy is Ownable {
         return now;
     }
 
+    // BK Ok - Only owner can execute
+    function claimTokens(address _token) public onlyOwner {
+        // BK Ok
+        if (_token == 0x0) {
+            // BK Ok
+            owner.transfer(this.balance);
+            // BK Ok
+            return;
+        }
+    
+        // BK Ok
+        ERC20Basic token = ERC20Basic(_token);
+        // BK Ok
+        uint256 balance = token.balanceOf(this);
+        // BK Ok
+        token.transfer(owner, balance);
+    }
 
 }
 ```

@@ -128,7 +128,7 @@ matches the audited source code, and that the deployment parameters are correctl
 * ETH contributions to the crowdsale are transferred to the *Treasury* contract and are held there until released to the
   crowdsale project on a schedule. In non-refund mode, only the crowdsale contract owner(s) can withdraw the ETH. In
   refund mode, any contributor is able to withdraw their refunds by calling the `refundInvestor(...)` function
-  * [ ] TODO - There is an outstanding **MEDIUM IMPORTANCE** bug (see above) in the logic of this function
+  * [x] Fixed issue where the refund percentage depends on the current balance
 
 <br />
 
@@ -164,8 +164,7 @@ in [test/test1results.txt](test/test1results.txt) and the detailed output saved 
 ### Original Source Files
 
 * [x] [code-review/Ballot.md](code-review/Ballot.md)
-  * [x] contract Ballot is IBallot
-    * [ ] Issue - `Ballot.initialQuorumPercent` shadows `IBallot.initialQuorumPercent`
+  * [x] contract Ballot
 * [x] [code-review/EthearnalRepToken.md](code-review/EthearnalRepToken.md)
   * [x] contract EthearnalRepToken is MintableToken, LockableToken
 * [x] [code-review/EthearnalRepTokenCrowdsale.md](code-review/EthearnalRepTokenCrowdsale.md)
@@ -179,7 +178,7 @@ in [test/test1results.txt](test/test1results.txt) and the detailed output saved 
     * NOTE A month is 5 weeks
 * [x] [code-review/Treasury.md](code-review/Treasury.md)
   * [x] contract Treasury is MultiOwnable
-    * [ ] Issue - Refund percentage depends on the current balance
+    * [x] Fixed issue where the refund percentage depends on the current balance
 * [x] [code-review/VotingProxy.md](code-review/VotingProxy.md)
   * [x] contract VotingProxy is Ownable
 
@@ -214,4 +213,4 @@ Excluded as this is used for testing:
 
 <br />
 
-(c) BokkyPooBah / Bok Consulting Pty Ltd for Ethearnal - Dec 20 2017. The MIT Licence.
+(c) BokkyPooBah / Bok Consulting Pty Ltd for Ethearnal - Dec 27 2017. The MIT Licence.

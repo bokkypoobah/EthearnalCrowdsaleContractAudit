@@ -26,7 +26,7 @@ contract MultiOwnable {
         multiOwnableCreator = msg.sender;
     }
 
-    // BK Ok - Only original owner can execute, once. Note that there is now ability to transfer ownership of contracts that use this
+    // BK Ok - Only original owner can execute, once. Note that there is no ability to transfer ownership of contracts that use this
     function setupOwners(address[] _owners) public {
         // Owners are allowed to be set up only one time
         // BK Ok

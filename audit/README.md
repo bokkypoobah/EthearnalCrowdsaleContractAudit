@@ -1,7 +1,5 @@
 # Ethearnal Crowdsale Contract Audit
 
-Status: Work in progress, waiting for developer's updates
-
 ## Summary
 
 Ethernal intends to run a crowdsale in the near future.
@@ -13,7 +11,7 @@ This audit has been conducted on Ethearnal's source code in commits
 [323eb08](https://github.com/Ethearnal/SmartContracts/commit/323eb0842cb701bbf516473b6129315745550757) and
 [d1bf698](https://github.com/Ethearnal/SmartContracts/commit/d1bf6983695fffef1e6bc1b2fa821e085bdda753).
 
-TODO - Check no potential vulnerabilities have been identified in the crowdsale and token contract.
+No potential vulnerabilities have been identified in the crowdsale, token, treasury and voting contracts.
 
 <br />
 
@@ -36,6 +34,8 @@ TODO - Check no potential vulnerabilities have been identified in the crowdsale 
 <hr />
 
 ## Recommendations
+
+The following recommendations have been addressed:
 
 * **LOW IMPORTANCE** In *IBallot*, the `FinishBallot` event is only logged if the voting results in a Yes vote. No event
   is logged if the voting results in a No vote
@@ -69,6 +69,9 @@ TODO - Check no potential vulnerabilities have been identified in the crowdsale 
 * **VERY LOW IMPORTANCE** The second `require(weiToBuy > 0);` statement in `EthearnalRepTokenCrowdsale.buyTokens()` is redundant as
   the first `require(weiToBuy > 0);` is followed by a `min(weiToBuy, ...)` statement
   * [x] Developer pointed out that the second statement is not redundant
+
+And the following recommendations are of low importance:
+
 * **LOW IMPORTANCE** In *MultiOwnable*, `getOwners()` should be declared constant
 * **LOW IMPORTANCE** In *Treasury*, consider making `teamWallet` public
 
@@ -78,7 +81,7 @@ TODO - Check no potential vulnerabilities have been identified in the crowdsale 
 
 ## Potential Vulnerabilities
 
-TODO - Check no potential vulnerabilities have been identified in the crowdsale and token contract.
+No potential vulnerabilities have been identified in the crowdsale, token, treasury and voting contracts.
 
 <br />
 
